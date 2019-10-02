@@ -153,7 +153,7 @@ var RFB;
         }.bind(this));
 
         // Create lookup tables based on encoding number
-        for (var i = 0; i < this._encodings.length; i++) {
+        for (var i = 0; i < this._encodings.length; i += 1) {
             this._encHandlers[this._encodings[i][1]] = this._encHandlers[this._encodings[i][0]];
             this._encNames[this._encodings[i][1]] = this._encodings[i][0];
             this._encStats[this._encodings[i][1]] = [0, 0];
@@ -341,11 +341,11 @@ var RFB;
 
             // Clear the per connection encoding stats
             var i;
-            for (i = 0; i < this._encodings.length; i++) {
+            for (i = 0; i < this._encodings.length; i += 1) {
                 this._encStats[this._encodings[i][1]][0] = 0;
             }
 
-            for (i = 0; i < 4; i++) {
+            for (i = 0; i < 4; i += 1) {
                 this._FBU.zlibs[i] = new TINF();
                 this._FBU.zlibs[i].init();
             }
@@ -354,7 +354,7 @@ var RFB;
         _print_stats: function () {
             Util.Info("Encoding stats for this connection:");
             var i, s;
-            for (i = 0; i < this._encodings.length; i++) {
+            for (i = 0; i < this._encodings.length; i += 1) {
                 s = this._encStats[this._encodings[i][1]];
                 if (s[0] + s[1] > 0) {
                     Util.Info("    " + this._encodings[i][0] + ": " + s[0] + " rects");
@@ -362,7 +362,7 @@ var RFB;
             }
 
             Util.Info("Encoding stats since page load:");
-            for (i = 0; i < this._encodings.length; i++) {
+            for (i = 0; i < this._encodings.length; i += 1) {
                 s = this._encStats[this._encodings[i][1]];
                 Util.Info("    " + this._encodings[i][0] + ": " + s[1] + " rects");
             }
@@ -667,7 +667,7 @@ var RFB;
                 this._rfb_auth_scheme = 0;
                 var types = this._sock.rQshiftBytes(num_types);
                 Util.Debug("Server security types: " + types);
-                for (var i = 0; i < types.length; i++) {
+                for (var i = 0; i < types.length; i += 1) {
                     if (types[i] > this._rfb_auth_scheme && (types[i] <= 16 || types[i] == 22)) {
                         this._rfb_auth_scheme = types[i];
                     }
@@ -732,7 +732,7 @@ var RFB;
             };
             var serverSupportedTunnelTypes = {};
             // receive tunnel capabilities
-            for (var i = 0; i < numTunnels; i++) {
+            for (var i = 0; i < numTunnels; i += 1) {
                 var cap_code = this._sock.rQshift32();
                 var cap_vendor = this._sock.rQshiftStr(4);
                 var cap_signature = this._sock.rQshiftStr(8);
@@ -778,7 +778,7 @@ var RFB;
 
             var serverSupportedTypes = [];
 
-            for (var i = 0; i < subAuthCount; i++) {
+            for (var i = 0; i < subAuthCount; i += 1) {
                 var capNum = this._sock.rQshift32();
                 var capabilities = this._sock.rQshiftStr(12);
                 serverSupportedTypes.push(capabilities);
@@ -896,15 +896,15 @@ var RFB;
                 if (this._sock.rQwait('TightVNC extended server init header', totalMessagesLength, 32 + name_length)) { return false; }
 
                 var i;
-                for (i = 0; i < numServerMessages; i++) {
+                for (i = 0; i < numServerMessages; i += 1) {
                     var srvMsg = this._sock.rQshiftStr(16);
                 }
 
-                for (i = 0; i < numClientMessages; i++) {
+                for (i = 0; i < numClientMessages; i += 1) {
                     var clientMsg = this._sock.rQshiftStr(16);
                 }
 
-                for (i = 0; i < numEncodings; i++) {
+                for (i = 0; i < numEncodings; i += 1) {
                     var encoding = this._sock.rQshiftStr(16);
                 }
             }
@@ -1008,7 +1008,7 @@ var RFB;
             var num_colours = this._sock.rQshift16();
             if (this._sock.rQwait('SetColorMapEntries', num_colours * 6, 6)) { return false; }
 
-            for (var c = 0; c < num_colours; c++) {
+            for (var c = 0; c < num_colours; c += 1) {
                 var red = parseInt(this._sock.rQshift16() / 256, 10);
                 var green = parseInt(this._sock.rQshift16() / 256, 10);
                 var blue = parseInt(this._sock.rQshift16() / 256, 10);
@@ -1148,8 +1148,8 @@ var RFB;
                 this._timing.cur_fbu += (now - this._timing.last_fbu);
 
                 if (ret) {
-                    this._encStats[this._FBU.encoding][0]++;
-                    this._encStats[this._FBU.encoding][1]++;
+                    this._encStats[this._FBU.encoding][0] += 1;
+                    this._encStats[this._FBU.encoding][1] += 1;
                     this._timing.pixels += this._FBU.width * this._FBU.height;
                 }
 
@@ -1157,7 +1157,7 @@ var RFB;
                     if ((this._FBU.width === this._fb_width && this._FBU.height === this._fb_height) ||
                         this._timing.fbu_rt_start > 0) {
                         this._timing.full_fbu_total += this._timing.cur_fbu;
-                        this._timing.full_fbu_cnt++;
+                        this._timing.full_fbu_cnt += 1;
                         Util.Info("Timing of full FBU, curr: " +
                                   this._timing.cur_fbu + ", total: " +
                                   this._timing.full_fbu_total + ", cnt: " +
@@ -1168,7 +1168,7 @@ var RFB;
                     if (this._timing.fbu_rt_start > 0) {
                         var fbu_rt_diff = now - this._timing.fbu_rt_start;
                         this._timing.fbu_rt_total += fbu_rt_diff;
-                        this._timing.fbu_rt_cnt++;
+                        this._timing.fbu_rt_cnt += 1;
                         Util.Info("full FBU round-trip, cur: " +
                                   fbu_rt_diff + ", total: " +
                                   this._timing.fbu_rt_total + ", cnt: " +
@@ -1259,7 +1259,7 @@ var RFB;
             arr.push8(0);   // padding
             arr.push32(text.length);
             var n = text.length;
-            for (var i = 0; i < n; i++) {
+            for (var i = 0; i < n; i += 1) {
                 arr.push(text.charCodeAt(i));
             }
 
@@ -1293,7 +1293,7 @@ var RFB;
         clientEncodings: function (encodings, local_cursor, true_color) {
             var i, encList = [];
 
-            for (i = 0; i < encodings.length; i++) {
+            for (i = 0; i < encodings.length; i += 1) {
                 if (encodings[i][0] === "Cursor" && !local_cursor) {
                     Util.Debug("Skipping Cursor pseudo-encoding");
                 } else if (encodings[i][0] === "TIGHT" && !true_color) {
@@ -1308,7 +1308,7 @@ var RFB;
             arr.push8(0);   // padding
 
             arr.push16(encList.length);  // encoding count
-            for (i = 0; i < encList.length; i++) {
+            for (i = 0; i < encList.length; i += 1) {
                 arr.push32(encList[i]);
             }
 
@@ -1327,7 +1327,7 @@ var RFB;
                 arr = arr.concat(RFB.messages.fbUpdateRequest(1, cb.x, cb.y, w, h));
             }
 
-            for (var i = 0; i < cleanDirty.dirtyBoxes.length; i++) {
+            for (var i = 0; i < cleanDirty.dirtyBoxes.length; i += 1) {
                 var db = cleanDirty.dirtyBoxes[i];
                 // Force all (non-incremental) for dirty box
                 w = typeof db.w === "undefined" ? fb_width : db.w;
@@ -1355,7 +1355,7 @@ var RFB;
 
     RFB.genDES = function (password, challenge) {
         var passwd = [];
-        for (var i = 0; i < password.length; i++) {
+        for (var i = 0; i < password.length; i += 1) {
             passwd.push(password.charCodeAt(i));
         }
         return (new DES(passwd)).encrypt(challenge);
@@ -1385,7 +1385,7 @@ var RFB;
             if (this._FBU.lines > 0) {
                 this._FBU.bytes = this._FBU.width * this._fb_Bpp;  // At least another line
             } else {
-                this._FBU.rects--;
+                this._FBU.rects -= 1;
                 this._FBU.bytes = 0;
             }
 
@@ -1404,7 +1404,7 @@ var RFB;
                 'width': this._FBU.width,
                 'height': this._FBU.height
             });
-            this._FBU.rects--;
+            this._FBU.rects -= 1;
             this._FBU.bytes = 0;
             return true;
         },
@@ -1426,14 +1426,14 @@ var RFB;
                 var width = this._sock.rQshift16();
                 var height = this._sock.rQshift16();
                 this._display.fillRect(this._FBU.x + x, this._FBU.y + y, width, height, color);
-                this._FBU.subrects--;
+                this._FBU.subrects -= 1;
             }
 
             if (this._FBU.subrects > 0) {
                 var chunk = Math.min(this._rre_chunk_sz, this._FBU.subrects);
                 this._FBU.bytes = (this._fb_Bpp + 8) * chunk;
             } else {
-                this._FBU.rects--;
+                this._FBU.rects -= 1;
                 this._FBU.bytes = 0;
             }
 
@@ -1480,7 +1480,7 @@ var RFB;
                         this._FBU.bytes += this._fb_Bpp;
                     }
                     if (subencoding & 0x08) {  // AnySubrects
-                        this._FBU.bytes++;  // Since we aren't shifting it off
+                        this._FBU.bytes += 1;  // Since we aren't shifting it off
                         if (this._sock.rQwait("hextile subrects header", this._FBU.bytes)) { return false; }
                         subrects = rQ[rQi + this._FBU.bytes - 1];  // Peek
                         if (subencoding & 0x10) {  // SubrectsColoured
@@ -1495,7 +1495,7 @@ var RFB;
 
                 // We know the encoding and have a whole tile
                 this._FBU.subencoding = rQ[rQi];
-                rQi++;
+                rQi += 1;
                 if (this._FBU.subencoding === 0) {
                     if (this._FBU.lastsubencoding & 0x01) {
                         // Weird: ignore blanks are RAW
@@ -1519,9 +1519,9 @@ var RFB;
                     this._display.startTile(x, y, w, h, this._FBU.background);
                     if (this._FBU.subencoding & 0x08) {  // AnySubrects
                         subrects = rQ[rQi];
-                        rQi++;
+                        rQi += 1;
 
-                        for (var s = 0; s < subrects; s++) {
+                        for (var s = 0; s < subrects; s += 1) {
                             var color;
                             if (this._FBU.subencoding & 0x10) {  // SubrectsColoured
                                 color = rQ.slice(rQi, rQi + this._fb_Bpp);
@@ -1530,12 +1530,12 @@ var RFB;
                                 color = this._FBU.foreground;
                             }
                             var xy = rQ[rQi];
-                            rQi++;
+                            rQi += 1;
                             var sx = (xy >> 4);
                             var sy = (xy & 0x0f);
 
                             var wh = rQ[rQi];
-                            rQi++;
+                            rQi += 1;
                             var sw = (wh >> 4) + 1;
                             var sh = (wh & 0x0f) + 1;
 
@@ -1547,11 +1547,11 @@ var RFB;
                 this._sock.set_rQi(rQi);
                 this._FBU.lastsubencoding = this._FBU.subencoding;
                 this._FBU.bytes = 0;
-                this._FBU.tiles--;
+                this._FBU.tiles -= 1;
             }
 
             if (this._FBU.tiles === 0) {
-                this._FBU.rects--;
+                this._FBU.rects -= 1;
             }
 
             return true;
@@ -1561,10 +1561,10 @@ var RFB;
             var header = 1, data = 0;
             data += arr[0] & 0x7f;
             if (arr[0] & 0x80) {
-                header++;
+                header += 1;
                 data += (arr[1] & 0x7f) << 7;
                 if (arr[1] & 0x80) {
-                    header++;
+                    header += 1;
                     data += arr[2] << 14;
                 }
             }
@@ -1581,9 +1581,11 @@ var RFB;
 
             var checksum = function (data) {
                 var sum = 0;
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < data.length; i += 1) {
                     sum += data[i];
-                    if (sum > 65536) sum -= 65536;
+                    if (sum > 65536) {
+                        sum -= 65536;
+                    }
                 }
                 return sum;
             };
@@ -1591,7 +1593,7 @@ var RFB;
             var resetStreams = 0;
             var streamId = -1;
             var decompress = function (data) {
-                for (var i = 0; i < 4; i++) {
+                for (var i = 0; i < 4; i += 1) {
                     if ((resetStreams >> i) & 1) {
                         this._FBU.zlibs[i].reset();
                         Util.Info("Reset zlib stream " + i);
@@ -1615,10 +1617,10 @@ var RFB;
                     var w = Math.floor((width + 7) / 8);
                     var w1 = Math.floor(width / 8);
 
-                    for (y = 0; y < height; y++) {
+                    for (y = 0; y < height; y += 1) {
                         var b;
-                        for (x = 0; x < w1; x++) {
-                            for (b = 7; b >= 0; b--) {
+                        for (x = 0; x < w1; x += 1) {
+                            for (b = 7; b >= 0; b -= 1) {
                                 dp = (y * width + x * 8 + 7 - b) * 3;
                                 sp = (data[y * w + x] >> b & 1) * 3;
                                 dest[dp] = palette[sp];
@@ -1627,7 +1629,7 @@ var RFB;
                             }
                         }
 
-                        for (b = 7; b >= 8 - width % 8; b--) {
+                        for (b = 7; b >= 8 - width % 8; b -= 1) {
                             dp = (y * width + x * 8 + 7 - b) * 3;
                             sp = (data[y * w + x] >> b & 1) * 3;
                             dest[dp] = palette[sp];
@@ -1636,8 +1638,8 @@ var RFB;
                         }
                     }
                 } else {
-                    for (y = 0; y < height; y++) {
-                        for (x = 0; x < width; x++) {
+                    for (y = 0; y < height; y += 1) {
+                        for (x = 0; x < width; x += 1) {
                             dp = (y * width + x) * 3;
                             sp = data[y * width + x] * 3;
                             dest[dp] = palette[sp];
@@ -1742,12 +1744,19 @@ var RFB;
             ctl = ctl >> 4;
             streamId = ctl & 0x3;
 
-            if (ctl === 0x08)       cmode = "fill";
-            else if (ctl === 0x09)  cmode = "jpeg";
-            else if (ctl === 0x0A)  cmode = "png";
-            else if (ctl & 0x04)    cmode = "filter";
-            else if (ctl < 0x04)    cmode = "copy";
-            else return this._fail("Illegal tight compression received, ctl: " + ctl);
+            if (ctl === 0x08) {
+                cmode = "fill";
+            } else if (ctl === 0x09) {
+                cmode = "jpeg";
+            } else if (ctl === 0x0A) {
+                cmode = "png";
+            } else if (ctl & 0x04) {
+                cmode = "filter";
+            } else if (ctl < 0x04) {
+                cmode = "copy";
+            } else {
+                return this._fail("Illegal tight compression received, ctl: " + ctl);
+            }
 
             if (isTightPNG && (cmode === "filter" || cmode === "copy")) {
                 return this._fail("filter/copy received in tightPNG mode");
@@ -1824,7 +1833,7 @@ var RFB;
 
 
             this._FBU.bytes = 0;
-            this._FBU.rects--;
+            this._FBU.rects -= 1;
 
             return true;
         },
@@ -1846,7 +1855,7 @@ var RFB;
             this._timing.fbu_rt_start = (new Date()).getTime();
 
             this._FBU.bytes = 0;
-            this._FBU.rects--;
+            this._FBU.rects -= 1;
 
             Util.Debug("<< set_desktopsize");
             return true;
@@ -1870,7 +1879,7 @@ var RFB;
                                        x, y, w, h);
 
             this._FBU.bytes = 0;
-            this._FBU.rects--;
+            this._FBU.rects -= 1;
 
             Util.Debug("<< set_cursor");
             return true;
