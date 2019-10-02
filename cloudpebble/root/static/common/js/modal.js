@@ -23,7 +23,9 @@
 
         this.$element.trigger(e)
 
-        if (this.isShown || e.isDefaultPrevented()) return
+        if (this.isShown || e.isDefaultPrevented()) {
+          return;
+        }
 
         this.isShown = true
 
@@ -64,7 +66,9 @@
 
         this.$element.trigger(e)
 
-        if (!this.isShown || e.isDefaultPrevented()) return
+        if (!this.isShown || e.isDefaultPrevented()) {
+          return;
+        }
 
         this.isShown = false
 
@@ -132,8 +136,9 @@
 
     , backdrop: function (callback) {
         $(document.body).addClass('backdrop');
-        if(callback)
+        if (callback) {
           callback();
+        }
 
         var that = this
           , animate = this.$element.hasClass('fade') ? 'fade' : ''
@@ -156,7 +161,9 @@
           this.$backdrop.remove();
           this.isShown = false;
           this.$backdrop = null;
-          if(callback) callback();
+          if (callback) {
+            callback();
+          }
         } else if (callback) {
           callback()
         }
@@ -174,9 +181,14 @@
       var $this = $(this)
         , data = $this.data('modal')
         , options = $.extend({}, $.fn.modal.defaults, $this.data(), typeof option == 'object' && option)
-      if (!data) $this.data('modal', (data = new Modal(this, options)))
-      if (typeof option == 'string') data[option]()
-      else if (options.show) data.show()
+      if (!data) {
+        $this.data('modal', (data = new Modal(this, options)));
+      }
+      if (typeof option == 'string') {
+        data[option]();
+      } else if (options.show) {
+        data.show();
+      }
     })
   }
 
@@ -247,7 +259,9 @@
         selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') //strip for ie7
       }
 
-      if ( $this.parent('li').hasClass('active') ) return
+      if ($this.parent('li').hasClass('active')) {
+        return;
+      }
 
       previous = $ul.find('.active:last a')[0]
 
@@ -257,7 +271,9 @@
 
       $this.trigger(e)
 
-      if (e.isDefaultPrevented()) return
+      if (e.isDefaultPrevented()) {
+        return;
+      }
 
       $target = $(selector)
 
@@ -316,8 +332,12 @@
     return this.each(function () {
       var $this = $(this)
         , data = $this.data('tab')
-      if (!data) $this.data('tab', (data = new Tab(this)))
-      if (typeof option == 'string') data[option]()
+      if (!data) {
+        $this.data('tab', (data = new Tab(this)));
+      }
+      if (typeof option == 'string') {
+        data[option]();
+      }
     })
   }
 
@@ -394,7 +414,7 @@
 
       triggers = this.options.trigger.split(' ')
 
-      for (i = triggers.length; i--;) {
+      for (i = triggers.length; i -= 1;) {
         trigger = triggers[i]
         if (trigger == 'click') {
           this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
@@ -430,29 +450,41 @@
         , self
 
       this._options && $.each(this._options, function (key, value) {
-        if (defaults[key] != value) options[key] = value
+        if (defaults[key] != value) {
+          options[key] = value;
+        }
       }, this)
 
       self = $(e.currentTarget)[this.type](options).data(this.type)
 
-      if (!self.options.delay || !self.options.delay.show) return self.show()
+      if (!self.options.delay || !self.options.delay.show) {
+        return self.show();
+      }
 
       clearTimeout(this.timeout)
       self.hoverState = 'in'
       this.timeout = setTimeout(function() {
-        if (self.hoverState == 'in') self.show()
+        if (self.hoverState == 'in') {
+          self.show();
+        }
       }, self.options.delay.show)
     }
 
   , leave: function (e) {
       var self = $(e.currentTarget)[this.type](this._options).data(this.type)
 
-      if (this.timeout) clearTimeout(this.timeout)
-      if (!self.options.delay || !self.options.delay.hide) return self.hide()
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      if (!self.options.delay || !self.options.delay.hide) {
+        return self.hide();
+      }
 
       self.hoverState = 'out'
       this.timeout = setTimeout(function() {
-        if (self.hoverState == 'out') self.hide()
+        if (self.hoverState == 'out') {
+          self.hide();
+        }
       }, self.options.delay.hide)
     }
 
@@ -467,7 +499,9 @@
 
       if (this.hasContent() && this.enabled) {
         this.$element.trigger(e)
-        if (e.isDefaultPrevented()) return
+        if (e.isDefaultPrevented()) {
+          return;
+        }
         $tip = this.tip()
         this.setContent()
 
@@ -548,7 +582,9 @@
         this.replaceArrow(actualHeight - height, actualHeight, 'top')
       }
 
-      if (replace) $tip.offset(offset)
+      if (replace) {
+        $tip.offset(offset);
+      }
     }
 
   , replaceArrow: function(delta, dimension, position){
@@ -571,7 +607,9 @@
         , e = $.Event('hide')
 
       this.$element.trigger(e)
-      if (e.isDefaultPrevented()) return
+      if (e.isDefaultPrevented()) {
+        return;
+      }
 
       $tip.removeClass('in')
 
@@ -675,8 +713,12 @@
       var $this = $(this)
         , data = $this.data('tooltip')
         , options = typeof option == 'object' && option
-      if (!data) $this.data('tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
+      if (!data) {
+        $this.data('tooltip', (data = new Tooltip(this, options)));
+      }
+      if (typeof option == 'string') {
+        data[option]();
+      }
     })
   }
 
@@ -796,8 +838,12 @@
       var $this = $(this)
         , data = $this.data('popover')
         , options = typeof option == 'object' && option
-      if (!data) $this.data('popover', (data = new Popover(this, options)))
-      if (typeof option == 'string') data[option]()
+      if (!data) {
+        $this.data('popover', (data = new Popover(this, options)));
+      }
+      if (typeof option == 'string') {
+        data[option]();
+      }
     })
   }
 

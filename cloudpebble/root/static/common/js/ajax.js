@@ -113,10 +113,11 @@ Ajax = (function() {
                         var err = new Error(data.state.result);
                         err.task_id = task_id;
                         throw err;
+                    } else {
+                        return Promise.delay(opts.milliseconds).then(function() {
+                            return poll_task(task_id);
+                        });
                     }
-                    else return Promise.delay(opts.milliseconds).then(function() {
-                        return poll_task(task_id);
-                    });
                 }).catch(function(error) {
                     // If a 'warning' function is specified, call it in one of two cases
                     // 1. The GET request itself fails
