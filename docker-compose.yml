@@ -25,7 +25,7 @@ services:
       - QEMU_URLS=http://172.245.74.113:8001/
       - YCM_URLS=http://172.245.74.113:8002/
       - PUBLIC_URL=http://172.245.74.113/
-      - LIBPEBBLE_PROXY=wss://cloudpebble-ws.herokuapp.com/tool
+      - LIBPEBBLE_PROXY=wss://cloudpebble-ws-proxy-1.herokuapp.com/tool
       - PEBBLE_AUTH_URL=https://auth.rebble.io
   celery:
     build: cloudpebble/
