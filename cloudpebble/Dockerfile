@@ -16,8 +16,12 @@ ADD requirements.txt /tmp/requirements.txt
 RUN pip install psycopg2 django==1.6.2 && pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Grab the toolchain
-RUN curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO//arm-cs-tools-7.4-2019.02.tar.xz" | \
-  tar --strip-components=1 -xJ -C /
+#RUN mkdir /arm-cs-tools && \
+#  curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO/arm-cs-tools-7.4-2019.02.tar.xz" | tar --strip-components=1 -xJ -C /
+
+# Grab the toolchain
+RUN curl -o /tmp/arm-cs-tools.tar https://cloudpebble-vagrant.s3.amazonaws.com/arm-cs-tools-stripped.tar && \
+  tar -xf /tmp/arm-cs-tools.tar -C / && rm /tmp/arm-cs-tools.tar
 
 # Install SDK 2
 RUN mkdir /sdk2 && \ 
@@ -33,9 +37,7 @@ RUN mkdir /sdk3 && \
 RUN cd /sdk3 && pnpm install
 ENV WAF_NODE_PATH=/sdk3/node_modules
 
-RUN pnpm add jquery codemirror fuse.js underscore backbone html5sortable \ 
-  https://github.com/alexgorbatchev/jquery-textext.git novnc/novnc jshint \
-  bluebird
+RUN pnpm install
 
 COPY . /code
 WORKDIR /code
