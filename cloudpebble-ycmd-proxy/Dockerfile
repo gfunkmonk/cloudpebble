@@ -2,10 +2,14 @@ FROM gfunkmonk/python2:disco AS squashme
 SHELL ["/bin/bash", "-c"]
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
-    apt-get update && apt-get install -y \
-    cmake libtinfo5 git curl xz-utils wget libclang-dev nodejs \
-    #cmake libtinfo5 git curl xz-utils wget nodejs \
-    --no-install-recommends && rm -rf /var/lib/apt/lists/
+  curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  printf 'deb https://dl.yarnpkg.com/debian/ stable main' | \
+  tee /etc/apt/sources.list.d/yarn.list && \
+  apt-get update && apt-get install -y cmake libtinfo5 git curl xz-utils \ 
+  wget nodejs yarn --no-install-recommends && \
+  #libclang-dev && \
+  curl -L https://unpkg.com/@pnpm/self-installer | node	&& \
+  rm -rf /var/lib/apt/lists/ 
 
 # ycmd
 RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
@@ -15,23 +19,19 @@ RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
   git submodule update --init --recursive && \
   #./build.sh --clang-completer
   #python build.py --clang-completer --system-libclang
-  python build.py --clang-completer --system-libclang
-  #python build.py --clang-completer
+  #python build.py --clang-completer --system-libclang
+  python build.py --clang-completer
 
 # Grab the toolchain
-RUN mkdir /arm-cs-tools \
-  && curl -L "https://gfunkmonk.s3.amazonaws.com/arm-cs-tools-7.4-2019.02.tar.xz" | \
-  tar --strip-components=1 -xJ -C /arm-cs-tools
+RUN curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO/arm-cs-tools-7.4-2019.02.tar.xz" | tar --strip-components=1 -xJ -C /
 
 # Install SDK 2
 RUN mkdir /sdk2 && \
-  curl -L "https://binaries.rebble.io/sdk-core/release/sdk-core-2.9.tar.bz2" | \
-  tar --strip-components=1 -xj -C /sdk2
+  curl -L "https://binaries.rebble.io/sdk-core/release/sdk-core-2.9.tar.bz2" | tar --strip-components=1 -xj -C /sdk2
 
 # Install SDK 3
 RUN mkdir /sdk3 && \
-  curl -L "https://binaries.rebble.io/sdk-core/release/sdk-core-4.3.tar.bz2" | \
-  tar --strip-components=1 -xj -C /sdk3
+  curl -L "https://binaries.rebble.io/sdk-core/release/sdk-core-4.3.tar.bz2" | tar --strip-components=1 -xj -C /sdk3
 
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt

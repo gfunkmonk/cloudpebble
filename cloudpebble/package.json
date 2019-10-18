@@ -1,8 +1,8 @@
 {
 	"name": "cloudpebble",
-        "scripts": {
-          "build": "webpack"
-        },
+	"scripts": {
+		"build": "webpack"
+	},
 	"version": "1.1.1",
 	"description": "It clouds pebbles, yo",
 	"dependencies": {
@@ -16,16 +16,17 @@
 		"jquery": "^3.4.1",
 		"jshint": "^2.10.2",
 		"json-loader": "^0.5.4",
+		"pnpm": "^4.0.2",
 		"restrict-resource-webpack-plugin": "^1.0.0",
 		"rocky-lint": "^2.0.0",
 		"text-encoding": "^0.7.0",
-                "uglyfly-js": "^3.2.2",
+		"uglify-js": "^3.6.2",
 		"underscore": "^1.9.1",
 		"utf8": "^2.1.1",
 		"webpack": "^4.41.2"
 	},
 	"engines": {
-		"node": "^12.9.1"
+		"pnpm": ">=4"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.9"

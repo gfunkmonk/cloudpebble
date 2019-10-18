@@ -7,7 +7,7 @@ flup==1.0.3.dev-20110405
 psycopg2==2.8.3
 South==1.0.2
 qrcode==6.1
-Pillow==4.2.0
+Pillow==6.2
 pygithub==1.14.2
 python-social-auth==0.1.23
 redis==2.10.5
@@ -16,7 +16,7 @@ gevent==1.1.1
 psycogreen==1.0.1
 requests==2.22.0
 oauth2client==1.5.1
-django-bower==5.1.0
+#django-bower==5.1.0
 mock==2.0.0
 # This is used for Mailchimp integration
 #mailchimp==2.0.9
@@ -53,5 +53,4 @@ python-memcached==1.59
 django-robots==3.0
 django-dotenv==1.4.1
 django-compat==1.0.13
-dotenv
-https://github.com/gfunkmonk/django-npm/archive/master.zip
+https://github.com/gfunkmonk/django-pnpm/archive/master.zip

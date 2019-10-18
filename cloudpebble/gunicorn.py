@@ -1,5 +1,5 @@
 worker_class = 'gevent'
-workers = 3
+workers = 4
 
 
 def post_fork(server, worker):

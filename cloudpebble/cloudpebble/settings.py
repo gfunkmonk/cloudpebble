@@ -154,8 +154,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'djangobower.finders.BowerFinder',
-    'npm.finders.NpmFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'pnpm.finders.PnpmFinder',
+    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 BOWER_INSTALLED_APPS = (
@@ -170,17 +170,17 @@ BOWER_INSTALLED_APPS = (
     #'codemirror#4.2.0',
     #'bluebird#3.3.4',
     #'kanaka/noVNC#v0.5',
-    'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
-    'jquery#~2.2.1',
-    'underscore',
-    'backbone',
-    'text-encoding',
-    'jshint/jshint',
-    'html.sortable#~0.4.1',
-    'alexgorbatchev/jquery-textext',
-    'codemirror#5.17.0',
-    'bluebird#3.5.5',
-    'kanaka/noVNC#v0.6.1',
+    ##'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
+    ##'jquery#~2.2.1',
+    ##'underscore',
+    ##'backbone',
+    ##'text-encoding',
+    ##'jshint/jshint',
+    ##'html.sortable#~0.4.1',
+    ##'alexgorbatchev/jquery-textext',
+    ##'codemirror#5.17.0',
+    ##'bluebird#3.5.5',
+    ##'kanaka/noVNC#v0.6.1',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -269,7 +269,7 @@ INSTALLED_APPS = (
     'south',
     'djcelery',
     'registration',
-    'djangobower',
+    #'djangobower',
     'robots',
 )
 
