@@ -3,8 +3,9 @@ sleep 1
 if [ ! -z "$RUN_WEB" ]; then
 	# Make sure the database is up to date.
 	echo "Performing database migration."
-	python manage.py syncdb --noinput
-	python manage.py migrate
+	#python manage.py syncdb --noinput
+        python manage.py makemigrations
+	python manage.py migrate --fake-initial
 
 	python manage.py runserver 0.0.0.0:$PORT
 elif [ ! -z "$RUN_CELERY" ]; then

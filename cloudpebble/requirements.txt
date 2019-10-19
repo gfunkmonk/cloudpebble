@@ -1,11 +1,12 @@
-Django==1.6.2
-django-registration==1.0
+Django==1.8
+django-registration==2.0.4
+-e git://github.com/pebble/django-pipeline.git@7c1bb9f4a90a5911c94e24bee79dfed48602a19f#egg=pipeline
 amqp<2.0,>=1.4.9
 celery==3.1.23
 django-celery==3.1.17
 flup==1.0.3.dev-20110405
 psycopg2==2.8.3
-South==1.0.2
+#South==1.0.2
 qrcode==6.1
 Pillow==6.2
 pygithub==1.14.2
@@ -23,6 +24,7 @@ mock==2.0.0
 
 # These are used for Heroku hosting setup.
 dj-static==0.0.6
+whitenoise==3.0
 gunicorn==19.5.0
 dj-database-url==0.5.0
 newrelic==2.50.0.39
@@ -54,5 +56,6 @@ django-node-assets==0.9.3
 django-robots==3.0
 django-dotenv==1.4.1
 django-compat==1.0.13
-git+https://github.com/gfunkmonk/django-pnpm.git
-django-environ==0.4.1
+#git+https://github.com/gfunkmonk/django-pnpm.git
+#django-environ==0.4.1
+django-environ

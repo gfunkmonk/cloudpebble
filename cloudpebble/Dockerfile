@@ -14,8 +14,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
  apt-get update && apt-get install -y --no-install-recommends \
- gettext memcached postgresql-client libpq-dev curl git wget \
- bash xz-utils nodejs && rm -rf /var/lib/apt/lists/* && \
+ gettext memcached postgresql-client libpq-dev curl git wget bash \
+ xz-utils nodejs libfreetype6 && rm -rf /var/lib/apt/lists/* && \
  curl -L https://unpkg.com/@pnpm/self-installer | node && \
  #pnpm install -g bower && echo "{"resolvers":"bower-npm-resolver","allow_root":"true","directory":"bower_components","color":true,"timeout":60000,"interactive":true}" >> /root/.bowerrc && \ 
  pnpm i -D bowerless bowercater bower-away && \
@@ -25,7 +25,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 EXPOSE 8000
 
 ADD requirements.txt /tmp/requirements.txt
-RUN pip install psycopg2 django==1.6.2 && pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install psycopg2 django==1.8 && pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Grab the toolchain
 #RUN mkdir /arm-cs-tools && \
@@ -74,5 +74,5 @@ COPY --from=squashme / /
 ENV WAF_NODE_PATH=/sdk3/node_modules
 WORKDIR /code
 
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py collectstatic --noinput
 CMD ["sh", "docker_start.sh"]
