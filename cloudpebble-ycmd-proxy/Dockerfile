@@ -1,13 +1,15 @@
 FROM gfunkmonk/python2:disco AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
   #curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
   #printf 'deb https://dl.yarnpkg.com/debian/ stable main' | \
   #tee /etc/apt/sources.list.d/yarn.list && \
-  apt-get update && apt-get install -y cmake libtinfo5 git curl xz-utils \ 
-  libclang-dev wget nodejs --no-install-recommends && \
+  && apt-get update && apt-get install -y cmake libtinfo5 \ 
+  git curl xz-utils wget nodejs --no-install-recommends && \
   rm -rf /var/lib/apt/lists/ 
+
+RUN curl -L https://unpkg.com/@pnpm/self-installer | node
 
 # ycmd
 RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
@@ -17,16 +19,18 @@ RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
   git submodule update --init --recursive && \
   #./build.sh --clang-completer
   #python build.py --clang-completer --system-libclang
-  python build.py --clang-completer --system-libclang
-  #python build.py --clang-completer
+  #python build.py --clang-completer --system-libclang
+  python build.py --clang-completer
 
 # Grab the toolchain
 #RUN mkdir /arm-cs-tools && \
-#  curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO/arm-cs-tools-7.4-2019.02.tar.xz" | tar --strip-components=1 -xJ -C /
+RUN wget -O /tmp/arm-cs-tools.tar.xz "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO/arm-cs-tools-7.4-2019.02.tar.xz" \ 
+ && tar -xf /tmp/arm-cs-tools.tar.xz -C / && \
+ rm -f /tmp/arm-cs-tools.tar.xz
 
 # Grab the toolchain
-RUN curl -o /tmp/arm-cs-tools.tar https://cloudpebble-vagrant.s3.amazonaws.com/arm-cs-tools-stripped.tar && \
-  tar -xf /tmp/arm-cs-tools.tar -C / && rm /tmp/arm-cs-tools.tar
+#RUN curl -o /tmp/arm-cs-tools.tar https://cloudpebble-vagrant.s3.amazonaws.com/arm-cs-tools-stripped.tar && \
+#  tar -xf /tmp/arm-cs-tools.tar -C / && rm /tmp/arm-cs-tools.tar
 
 # Install SDK 2
 RUN mkdir /sdk2 && \
@@ -39,12 +43,12 @@ RUN mkdir /sdk3 && \
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
-COPY . /code
+RUN apt remove --purge curl xz-utils git libmagickcore-dev \ 
+  libmagickwand-dev autotools-dev bzr mercurial subversion \ 
+  python3 python3-minimal hicolor-icon-theme -y && \ 
+  apt-get autoremove --purge -y
 
-RUN curl -L https://unpkg.com/@pnpm/self-installer | node && \
-  apt remove --purge curl xz-utils git libmagickcore-dev libmagickwand-dev \
-  autotools-dev bzr mercurial subversion python3 python3-minimal hicolor-icon-theme \ 
-  -y && apt-get autoremove --purge -y
+COPY . /code
 
 FROM scratch
 COPY --from=squashme / /

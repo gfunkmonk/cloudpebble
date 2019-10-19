@@ -3,11 +3,11 @@
 	"scripts": {
 		"build": "webpack"
 	},
-	"version": "1.1.1",
+	"version": "0.6.6",
 	"description": "It clouds pebbles, yo",
 	"dependencies": {
 		"@novnc/novnc": "github:novnc/novnc",
-		"app_name": "git+https://github.com/alexgorbatchev/jquery-textext.git",
+		"jquery-textext": "git+https://github.com/alexgorbatchev/jquery-textext.git",
 		"backbone": "^1.4.0",
 		"bluebird": "^3.7.1",
 		"codemirror": "^5.49.0",
@@ -16,7 +16,6 @@
 		"jquery": "^3.4.1",
 		"jshint": "^2.10.2",
 		"json-loader": "^0.5.4",
-		"pnpm": "^4.0.2",
 		"restrict-resource-webpack-plugin": "^1.0.0",
 		"rocky-lint": "^2.0.0",
 		"text-encoding": "^0.7.0",
@@ -26,7 +25,7 @@
 		"webpack": "^4.41.2"
 	},
 	"engines": {
-		"pnpm": ">=4"
+		"node": ">=10"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.9"

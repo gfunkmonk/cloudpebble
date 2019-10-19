@@ -16,7 +16,7 @@ gevent==1.1.1
 psycogreen==1.0.1
 requests==2.22.0
 oauth2client==1.5.1
-#django-bower==5.1.0
+#django-bower==5.2.0
 mock==2.0.0
 # This is used for Mailchimp integration
 #mailchimp==2.0.9
@@ -49,8 +49,10 @@ rsa==3.4.1
 six==1.12.0
 static3==0.6.1
 python-memcached==1.59
-#django-npm
+django-npm
+django-node-assets==0.9.3
 django-robots==3.0
 django-dotenv==1.4.1
 django-compat==1.0.13
-https://github.com/gfunkmonk/django-pnpm/archive/master.zip
+git+https://github.com/gfunkmonk/django-pnpm.git
+django-environ==0.4.1
