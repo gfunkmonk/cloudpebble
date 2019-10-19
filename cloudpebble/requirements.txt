@@ -1,16 +1,16 @@
-Django==1.8
+Django==1.9.12
 django-registration==2.0.4
 -e git://github.com/pebble/django-pipeline.git@7c1bb9f4a90a5911c94e24bee79dfed48602a19f#egg=pipeline
 amqp<2.0,>=1.4.9
-celery==3.1.23
-django-celery==3.1.17
+celery==3.2.2
 flup==1.0.3.dev-20110405
 psycopg2==2.8.3
 #South==1.0.2
 qrcode==6.1
 Pillow==6.2
 pygithub==1.14.2
-python-social-auth==0.1.23
+#python-social-auth==0.1.23
+python-social-auth==0.2.16
 redis==2.10.5
 boto==2.39.0
 gevent==1.1.1
@@ -23,7 +23,6 @@ mock==2.0.0
 #mailchimp==2.0.9
 
 # These are used for Heroku hosting setup.
-dj-static==0.0.6
 whitenoise==3.0
 gunicorn==19.5.0
 dj-database-url==0.5.0

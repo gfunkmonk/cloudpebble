@@ -19,6 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 ADMINS = (
     ('admin', 'admin@cloudpebble.tk'),
 )
+MANAGERS = ADMINS
 
 DEFAULT_FROM_EMAIL = _environ.get('FROM_EMAIL', 'CloudPebble <admin@cloudpebble.tk>')
 
@@ -174,7 +175,7 @@ STATICFILES_FINDERS = (
     'npm.finders.NpmFinder',
 )
 
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STATICFILES_STORAGE = 'cloudpebble.storage.CompressedManifestPipelineStorage'
 
 BOWER_INSTALLED_APPS = (
     'https://github.com/krisk/Fuse.git#2ec2f2c40059e135cabf2b01c8c3f96f808b8809',
@@ -546,9 +547,6 @@ QEMU_LAUNCH_TIMEOUT = int(_environ.get('QEMU_LAUNCH_TIMEOUT', 25))
 PHONE_SHORTURL = _environ.get('PHONE_SHORTURL', 'cpbl.io')
 
 WAF_NODE_PATH = _environ.get('WAF_NODE_PATH', None)
-
-import djcelery
-djcelery.setup_loader()
 
 # import local settings
 try:

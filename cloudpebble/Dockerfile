@@ -25,7 +25,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
 EXPOSE 8000
 
 ADD requirements.txt /tmp/requirements.txt
-RUN pip install psycopg2 django==1.8 && pip install --no-cache-dir -r /tmp/requirements.txt
+RUN pip install psycopg2 django==1.9.12 && pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Grab the toolchain
 #RUN mkdir /arm-cs-tools && \
@@ -61,6 +61,7 @@ WORKDIR /code
 #RUN rm -rf node_modules && cd /tmp && python /code/manage.py bower install && mv bower_components /code/
 
 RUN python manage.py compilemessages
+RUN python manage.py collectstatic --noinput
 RUN make -C /code/c-preload
 
 RUN apt-get remove --purge wget xz-utils \
@@ -74,5 +75,4 @@ COPY --from=squashme / /
 ENV WAF_NODE_PATH=/sdk3/node_modules
 WORKDIR /code
 
-#RUN python manage.py collectstatic --noinput
 CMD ["sh", "docker_start.sh"]
