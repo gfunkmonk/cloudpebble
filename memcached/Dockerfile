@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:latest AS squashme
 
 COPY memcached.sh /memcached.sh
 RUN apk --no-cache add memcached && chmod +x /memcached.sh

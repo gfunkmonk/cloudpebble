@@ -9,7 +9,6 @@ from pipeline.conf import settings
 from pipeline.compressors import SubProcessCompressor
 from pipeline.utils import source_map_re, path_depth
 
-
 class ConcatenatingUglifyJSCompressor(SubProcessCompressor):
     def compress_js(self, js):
         command = [settings.UGLIFYJS_BINARY, settings.UGLIFYJS_ARGUMENTS]

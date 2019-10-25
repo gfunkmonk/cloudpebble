@@ -1,26 +1,10 @@
-FROM gfunkmonk/python2:disco AS squashme
+FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
- #curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
- #printf 'deb https://dl.yarnpkg.com/debian/ stable main' | \
- #tee /etc/apt/sources.list.d/yarn.list && \
- #yarn \
-
- #pnpm install -g git-resolver && \
- #pnpm install -g bye-bye-bower && \
-
- #pnpm install -g yarn-unduplicate && \
- #yarn global add syncyarnlock
-
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
- apt-get update && apt-get install -y --no-install-recommends \
- gettext memcached postgresql-client libpq-dev curl git wget bash \
- xz-utils nodejs libfreetype6 && rm -rf /var/lib/apt/lists/* && \
- curl -L https://unpkg.com/@pnpm/self-installer | node && \
- #pnpm install -g bower && echo "{"resolvers":"bower-npm-resolver","allow_root":"true","directory":"bower_components","color":true,"timeout":60000,"interactive":true}" >> /root/.bowerrc && \ 
- pnpm i -D bowerless bowercater bower-away && \
- pnpm i -g npminstall npm-check-updates npx && \
- pnpm add codemirror jshint
+RUN apk update && apk add --no-cache memcached postgresql-client postgresql-dev gettext curl git wget xz \
+ gcc g++ make && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev linux-headers musl-dev python2-dev && \
+ rm -rf /var/cache/apk/* && \
+ curl -L https://unpkg.com/@pnpm/self-installer | node
 
 EXPOSE 8000
 
@@ -28,17 +12,12 @@ ADD requirements.txt /tmp/requirements.txt
 RUN pip install psycopg2 django==1.9.12 && pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Grab the toolchain
-#RUN mkdir /arm-cs-tools && \
-RUN wget -O /tmp/arm-cs-tools.tar.xz "http://pebble.gfunkmonk.info/secret/arm-cs-tools/LINARO/arm-cs-tools-7.4-2019.02.tar.xz" \
- && tar -xf /tmp/arm-cs-tools.tar.xz -C / && \
- rm -f /tmp/arm-cs-tools.tar.xz
-
-# Grab the toolchain
-#RUN curl -o /tmp/arm-cs-tools.tar https://cloudpebble-vagrant.s3.amazonaws.com/arm-cs-tools-stripped.tar && \
-#  tar -xf /tmp/arm-cs-tools.tar -C / && rm /tmp/arm-cs-tools.tar
+RUN mkdir /arm-cs-tools && \
+  curl -L "https://gfunkmonk.s3.amazonaws.com/arm-cs-tools-4.9-2017.01.tar.xz" | \
+  tar --strip-components=1 -xJ -C /arm-cs-tools
 
 # Install SDK 2
-RUN mkdir /sdk2 && \ 
+RUN mkdir /sdk2 && \
   curl -L "https://binaries.rebble.io/sdk-core/release/sdk-core-2.9.tar.bz2" | \
   tar --strip-components=1 -xj -C /sdk2
 
@@ -54,25 +33,19 @@ ENV WAF_NODE_PATH=/sdk3/node_modules
 COPY . /code
 WORKDIR /code
 
-#RUN pnpm update
+#ENV HOME=/root
+RUN pnpm install 
 
-# Bower is awful.
-#RUN rm -rf bower_components && cd /tmp && python /code/manage.py bower install && mv bower_components /code/
-#RUN rm -rf node_modules && cd /tmp && python /code/manage.py bower install && mv bower_components /code/
-
+#RUN python manage.py bower_install --allow-root
 RUN python manage.py compilemessages
-RUN python manage.py collectstatic --noinput
+#RUN python manage.py npminstall
+#RUN python manage.py collectstatic --noinput
 RUN make -C /code/c-preload
+RUN apk del .build-deps
 
-RUN apt-get remove --purge wget xz-utils \
-  autoconf automake libcurl4-openssl-dev \
-  libkrb5-dev liblzma-dev libmagickcore-dev \
-  libmagickwand-dev bzr mercurial subversion -y \
-  && apt-get autoremove --purge -y
-
-FROM scratch
-COPY --from=squashme / /
-ENV WAF_NODE_PATH=/sdk3/node_modules
-WORKDIR /code
+#FROM scratch
+#COPY --from=squashme / /
+#ENV WAF_NODE_PATH=/sdk3/node_modules
+#WORKDIR /code
 
 CMD ["sh", "docker_start.sh"]

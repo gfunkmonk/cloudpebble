@@ -146,19 +146,17 @@ PUBLIC_URL = _environ.get('PUBLIC_URL', 'http://localhost:8000/') # This default
 
 NODE_MODULES_PATH = _environ.get('NODE_MODULES_PATH', os.path.join(os.getcwd(), 'node_modules'))
 
-
 def _node_bin(name):
     return os.path.join(NODE_MODULES_PATH, '.bin', name)
 
-NODE_PACKAGE_JSON = '/package.json'
-NODE_MODULES_ROOT = '/node_modules'
+NODE_PACKAGE_JSON = os.path.join(BASE_DIR, 'package.json')
+NODE_MODULES_ROOT = os.path.join(BASE_DIR, 'node_modules')
+NODE_PACKAGE_MANAGER_EXECUTABLE = '/usr/local/bin/pnpm'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-     # This is used instead of django-bower's finder, because django-pipeline
-     # is actually better than django-bower at filtering out unneeded static
-     # files.
      os.path.join(os.path.dirname(__file__), '..', 'node_modules'),
+     #os.path.join(os.path.dirname(__file__), '..', 'bower_components'),
 )
 
 # List of finder classes that know how to find static files in
@@ -166,51 +164,37 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'djangobower.finders.BowerFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'pipeline.finders.CachedFileFinder',
     'pipeline.finders.PipelineFinder',
+    'pipeline.finders.FileSystemFinder',
     'django_node_assets.finders.NodeModulesFinder',
     #'pnpm.finders.PnpmFinder',
     'npm.finders.NpmFinder',
+    #'yarn.finders.YarnFinder',
+    #'djangobower.finders.BowerFinder',
 )
 
-STATICFILES_STORAGE = 'cloudpebble.storage.CompressedManifestPipelineStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'cloudpebble.storage.CompressedManifestPipelineStorage'
+#STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 
 BOWER_INSTALLED_APPS = (
-    'https://github.com/krisk/Fuse.git#2ec2f2c40059e135cabf2b01c8c3f96f808b8809',
-    'jquery#~2.1.3',
-    'underscore',
-    'backbone',
-    'text-encoding',
+    'gfunkmonk/jquery-textext',
     'jshint/jshint',
-    'html.sortable#~0.3.1',
-    'alexgorbatchev/jquery-textext',
-    'codemirror#4.2.0',
-    'bluebird#3.3.4',
-    'kanaka/noVNC#v0.5',
-    #'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
-    #'jquery#~2.2.1',
-    #'underscore',
-    #'backbone',
-    #'text-encoding',
-    #'jshint/jshint',
-    #'html.sortable#~0.4.1',
-    #'alexgorbatchev/jquery-textext',
-    #'codemirror#5.17.0',
-    #'bluebird#3.5.5',
-    #'kanaka/noVNC#v0.6.1',
+    'kugel-soft/text-encoding',
+    #'QulinaryOrg/node-semver',
 )
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = _environ.get('SECRET_KEY', None)
 
 # List of callables that know how to import templates from various sources.
-#TEMPLATE_LOADERS = (
-#    'django.template.loaders.filesystem.Loader',
-#    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
-#)
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+     #'django.template.loaders.eggs.Loader',
+)
 
 #if not DEBUG:
 #    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
@@ -247,6 +231,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'django.middleware.gzip.GZipMiddleware',
+    #'pipeline.middleware.MinifyHTMLMiddleware',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -310,11 +296,11 @@ INSTALLED_APPS = (
     'root',
     'qr',
     #'south',
-    'djcelery',
+    #'djcelery',
     'registration',
-    #'djangobower',
     'robots',
     'django_node_assets',
+    #'djangobower'
 )
 
 # Configuration for django-pipeline, used to concatenate and compress JS and CSS sources and
@@ -331,14 +317,14 @@ PIPELINE = {
     'STYLESHEETS': {
         'codemirror': {
             'source_filenames': (
-                'CodeMirror/addon/hint/show-hint.css',
-                'CodeMirror/addon/dialog/dialog.css',
-                'CodeMirror/lib/codemirror.css',
-                'CodeMirror/theme/monokai.css',
-                'CodeMirror/theme/eclipse.css',
-                'CodeMirror/theme/blackboard.css',
-                'CodeMirror/theme/solarized.css',
-                'CodeMirror/addon/fold/foldgutter.css',
+                'codemirror/addon/hint/show-hint.css',
+                'codemirror/addon/dialog/dialog.css',
+                'codemirror/lib/codemirror.css',
+                'codemirror/theme/monokai.css',
+                'codemirror/theme/eclipse.css',
+                'codemirror/theme/blackboard.css',
+                'codemirror/theme/solarized.css',
+                'codemirror/addon/fold/foldgutter.css',
             ),
             'output_filename': 'build/codemirror.css'
         },
@@ -388,24 +374,24 @@ PIPELINE = {
                 'react/react.js',
                 'react/react-dom.js',
                 'classnames/index.js',
-                'CodeMirror/lib/codemirror.js',
-                'CodeMirror/addon/dialog/dialog.js',
-                'CodeMirror/addon/search/searchcursor.js',
-                'CodeMirror/addon/search/search.js',
-                'CodeMirror/addon/edit/matchbrackets.js',
-                'CodeMirror/addon/edit/closebrackets.js',
-                'CodeMirror/addon/comment/comment.js',
-                'CodeMirror/addon/fold/foldgutter.js',
-                'CodeMirror/addon/fold/foldcode.js',
-                'CodeMirror/addon/fold/brace-fold.js',
-                'CodeMirror/addon/fold/comment-fold.js',
-                'CodeMirror/addon/runmode/runmode.js',
+                'codemirror/lib/codemirror.js',
+                'codemirror/addon/dialog/dialog.js',
+                'codemirror/addon/search/searchcursor.js',
+                'codemirror/addon/search/search.js',
+                'codemirror/addon/edit/matchbrackets.js',
+                'codemirror/addon/edit/closebrackets.js',
+                'codemirror/addon/comment/comment.js',
+                'codemirror/addon/fold/foldgutter.js',
+                'codemirror/addon/fold/foldcode.js',
+                'codemirror/addon/fold/brace-fold.js',
+                'codemirror/addon/fold/comment-fold.js',
+                'codemirror/addon/runmode/runmode.js',
                 'ide/external/codemirror.hint.js',
-                'fuse.js/src/fuse.js',
-                'CodeMirror/mode/clike/clike.js',
-                'CodeMirror/mode/javascript/javascript.js',
-                'CodeMirror/keymap/emacs.js',
-                'CodeMirror/keymap/vim.js',
+                'fuse.js/dist/fuse.js',
+                'codemirror/mode/clike/clike.js',
+                'codemirror/mode/javascript/javascript.js',
+                'codemirror/keymap/emacs.js',
+                'codemirror/keymap/vim.js',
                 'ide/external/uuid.js',
                 'jshint/dist/jshint.js',
                 'html.sortable/dist/html.sortable.min.js',
@@ -483,8 +469,11 @@ REDIS_URL = _environ.get('REDIS_URL', None) or _environ.get('REDISCLOUD_URL', 'r
 
 BROKER_URL = REDIS_URL + '/1'
 CELERY_RESULT_BACKEND = BROKER_URL
-CELERY_ACCEPT_CONTENT = ['pickle']
+CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
+CELERY_RESULT_SERIALIZER = 'pickle'
+#CELERY_ACCEPT_CONTENT = ['json']
+#CELERY_TASK_SERIALIZER = 'json'
 
 CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
 CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
@@ -547,6 +536,12 @@ QEMU_LAUNCH_TIMEOUT = int(_environ.get('QEMU_LAUNCH_TIMEOUT', 25))
 PHONE_SHORTURL = _environ.get('PHONE_SHORTURL', 'cpbl.io')
 
 WAF_NODE_PATH = _environ.get('WAF_NODE_PATH', None)
+
+ROBOTS_USE_SITEMAP = False
+ROBOTS_USE_SCHEME_IN_HOST = True
+ROBOTS_CACHE_TIMEOUT = 60*60*24
+
+USE_THOUSAND_SEPARATOR = True
 
 # import local settings
 try:

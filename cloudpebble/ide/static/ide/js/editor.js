@@ -302,7 +302,7 @@ CloudPebble.Editor = (function() {
                             Int32Array: true,
                             Uint32Array: true,
                             Float32Array: true,
-                            Float64Array: true
+                            Float64Array: true,
                         };
 
                         if (CloudPebble.ProjectInfo.type != 'rocky') {
@@ -324,8 +324,12 @@ CloudPebble.Editor = (function() {
                         } else if (CloudPebble.ProjectInfo.type == 'pebblejs') {
                             _.extend(jshint_globals, {
                                 require: true,
-                                ajax: true
-                            });
+                                ajax: true,
+                                escape: true,
+                                unescape: true,
+                                exports: true,
+                                module: true
+             });
                         } else if (CloudPebble.ProjectInfo.app_modern_multi_js) {
                             _.extend(jshint_globals, {
                                 require: true,
@@ -340,7 +344,10 @@ CloudPebble.Editor = (function() {
                             immed: true,
                             latedef: "nofunc",
                             undef: true,
-                            unused: "vars"
+                            unused: "vars",
+                            asi: true,
+                            multistr: false,
+                            plusplus: false
                         }, jshint_globals);
                         if (!success) {
                             errors = JSHINT.errors;
@@ -387,6 +394,7 @@ CloudPebble.Editor = (function() {
                 var debounced_check = _.debounce(function() {
                     if(sChecking) return;
                     sChecking = true;
+                    if (code_mirror.getValue().match(/\n/g).length < 5) return;
                     CloudPebble.YCM.request('errors', code_mirror)
                         .then(function(data) {
                             _.each(clang_lines, function(line) {

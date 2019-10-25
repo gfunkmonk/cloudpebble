@@ -1,10 +1,8 @@
-FROM gfunkmonk/python2:disco AS squashme
+FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update && apt-get install -y \
-  libglib2.0-dev libpixman-1-dev libfdt-dev gnutls-dev findutils make libtool \
-  zlib1g-dev device-tree-compiler libbluetooth-dev gcc g++ automake \ 
-  --no-install-recommends && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache pixman-dev glib-dev dtc-dev gnutls-dev && apk add --no-cache --virtual .build-deps findutils make libtool \ 
+ zlib-dev gcc g++ automake git curl make xz python2-dev && rm -rf /var/cache/apk/* 
 
 #RUN git clone https://github.com/gfunkmonk/qemu && cd /qemu && \
 RUN mkdir /qemu && cd /qemu && \
@@ -43,13 +41,11 @@ RUN mkdir /qemu-tintin-images && cd /qemu-tintin-images && \
   curl -L https://github.com/pebble/qemu-tintin-images/archive/v4.3.tar.gz | \
   tar xz --strip 1
 
-RUN apt-get remove --purge git xz-utils automake make gcc g++ \ 
- libmagickcore-dev libmagickwand-dev bzr mercurial subversion -y \
- && apt-get autoremove --purge -y
-
+RUN apk del .build-deps
 COPY . /code
-FROM scratch
-COPY --from=squashme / /
+
+#FROM scratch
+#COPY --from=squashme / /
 WORKDIR /code
 
 ENV QEMU_DIR=/qemu QEMU_BIN=/qemu/arm-softmmu/qemu-system-arm \ 
