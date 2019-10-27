@@ -120,7 +120,9 @@ CloudPebble.Editor = (function() {
                 styleActiveLine: true,
                 value: source,
                 theme: USER_SETTINGS.theme,
-                foldGutter: true
+                foldGutter: true,
+                autoRefresh: true,
+                showTrailingSpace: true
             };
             if(USER_SETTINGS.keybinds !== '') {
                 settings.keyMap = USER_SETTINGS.keybinds;
@@ -718,7 +720,7 @@ CloudPebble.Editor = (function() {
                 },
                 html: true,
                 placement: 'left',
-                animation: false,
+                animation: true,
                 delay: {show: 250},
                 container: 'body'
             }).click(function() { $(this).popover('hide'); });

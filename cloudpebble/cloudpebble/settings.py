@@ -184,7 +184,8 @@ STATICFILES_FINDERS = (
 )
 
 BOWER_INSTALLED_APPS = (
-    'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
+    #'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
+    'https://github.com/krisk/Fuse.git#2ec2f2c40059e135cabf2b01c8c3f96f808b8809',
     'jquery#~2.1.3',
     'underscore',
     'backbone',
@@ -192,10 +193,9 @@ BOWER_INSTALLED_APPS = (
     'jshint/jshint',
     'html.sortable#~0.3.1',
     'gfunkmonk/jquery-textext',
-    'CodeMirror#5.15.2',
+    'CodeMirror#5.19.0',
     'bluebird#~3.3.5',
     'kanaka/noVNC#0.5.1',
-    'https://code.jquery.com/jquery-migrate-1.4.1.js',
 )
 
 # Make this unique, and don't share it with anybody.

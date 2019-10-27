@@ -119,7 +119,7 @@ CloudPebble.Emulator = new (function() {
             trigger: 'click',
             content: getHTML,
             html: true,
-            animation: false
+            animation: true
         }).on('shown', handleShown);
         SharedPebble.on('close', handleClosed);
     };
