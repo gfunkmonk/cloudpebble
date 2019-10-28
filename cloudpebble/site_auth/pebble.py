@@ -1,5 +1,4 @@
 from social_core.backends.oauth import BaseOAuth2, OAuthAuth
-from social_django.strategy import DjangoStrategy
 
 from django.conf import settings
 from ide.models.user import UserGithub
@@ -21,7 +20,7 @@ class PebbleOAuth2(BaseOAuth2):
     SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['state']
     LOGIN_REDIRECT_URL = '/ide/'
 
-    SOCIAL_AUTH_SESSION_EXPIRATION = True
+    SOCIAL_AUTH_SESSION_EXPIRATION = False
     SERVER_NAME = "cloudpebble.tk"
     PEBBLE_REDIRECT_URI = "http://cloudpebble.tk"
     REDIRECT_URI = "http://cloudpebble.tk"

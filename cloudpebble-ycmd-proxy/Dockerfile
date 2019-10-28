@@ -1,7 +1,7 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apk update && apk add --no-cache ncurses-dev && apk add --no-cache --virtual .build-deps llvm clang-dev gcc g++ make automake git curl xz wget cmake python2-dev \ 
+RUN apk update && apk add --no-cache libffi-dev ncurses-dev clang-dev && apk add --no-cache --virtual .build-deps llvm gcc g++ make automake git curl xz wget cmake python2-dev \ 
   && rm -rf /var/cache/apk/* 
   #&& curl -L https://unpkg.com/@pnpm/self-installer | node
 
@@ -38,9 +38,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
-RUN ln -sf /ycmd/libclang.so /ycmd/libclang.so.9 && \
-  ln -sf /ycmd/libclang.so /ycmd/libclang.so.7 && \
-  ln -sf /ycmd/libclang.so /ycmd/libclang.so.5
+RUN cp /ycmd/libclang.so /ycmd/libclang.so.8 && \
+  cp /usr/lib/libclang.so /ycmd/libclang.so.8
 
 COPY . /code
 FROM scratch

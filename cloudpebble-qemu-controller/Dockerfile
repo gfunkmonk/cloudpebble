@@ -1,7 +1,7 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apk update && apk add --no-cache pixman-dev glib-dev dtc-dev gnutls-dev && apk add --no-cache --virtual .build-deps findutils make libtool \ 
+RUN apk update && apk add --no-cache pixman-dev glib-dev dtc-dev gnutls-dev boost && apk add --no-cache --virtual .build-deps findutils make libtool \ 
  zlib-dev gcc g++ automake git curl make xz python2-dev && rm -rf /var/cache/apk/* 
 
 #RUN git clone https://github.com/gfunkmonk/qemu && cd /qemu && \
@@ -26,13 +26,16 @@ RUN mkdir /qemu && cd /qemu && \
   && make clean \
   && make -j4
 
+#RUN git clone https://github.com/gfunkmonk/pypkjs.git --depth 1 --branch master --recursive
 RUN git clone https://github.com/pebble/pypkjs.git --depth 1 --branch master --recursive
 #RUN git clone https://github.com/pebble/pypkjs.git --depth 1 --branch v1.1.1 --recursive
 
 RUN pip install virtualenv && \
   virtualenv /pypkjs/.env && \
   . /pypkjs/.env/bin/activate \
-  && pip install -r /pypkjs/requirements.txt
+  && pip install -r /pypkjs/requirements.txt \
+  && curl -L http://pebble.gfunkmonk.info/secret/libboost.tar.xz | \
+  tar xJ -C /
 
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
