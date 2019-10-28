@@ -370,10 +370,10 @@ CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERYD_HIJACK_ROOT_LOGGER = False
 
-CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
-CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
+CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 6200))
+CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 6000))
 
-BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 10))
+BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 30))
 
 LOGIN_REDIRECT_URL = '/ide/'
 
@@ -449,7 +449,7 @@ except ImportError:
     print "No local settings overrides."
     pass
 
-socket.setdefaulttimeout(int(_environ.get("DEFAULT_SOCKET_TIMEOUT", 10)))
+socket.setdefaulttimeout(int(_environ.get("DEFAULT_SOCKET_TIMEOUT", 20)))
 
 # Don't keep these hanging around in the environment.
 if not DEBUG:
