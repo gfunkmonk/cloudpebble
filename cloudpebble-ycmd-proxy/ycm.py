@@ -12,6 +12,7 @@ import requests.exceptions
 import shutil
 import time
 import os
+import re
 
 from symbol_blacklist import is_valid_symbol
 import settings
@@ -19,6 +20,12 @@ from filesync import FileSync
 
 __author__ = 'katharine'
 
+
+def _newlines_less_than(str, max_newlines):
+     for n, _ in enumerate(re.finditer('\n', str)):
+         if n == max_newlines:
+             return False
+     return True
 
 class YCM(object):
     def __init__(self, files, platform='aplite'):
@@ -46,7 +53,6 @@ class YCM(object):
             '--port', str(self._port),
             '--options_file', options_file
         ], cwd=self.files.root_dir, env=env)
-
     def apply_settings(self, file):
         self._request('load_extra_conf_file', {'filepath': file})
 
@@ -84,6 +90,10 @@ class YCM(object):
         self._update_ping()
         path = self.files.abs_path(filepath)
         with open(path) as f:
+            contents = f.read()
+             if _newlines_less_than(contents, 5):
+                 # YCMD complains if you try to parse a file with less than 5 lines.
+                 return None
             request = {
                 'event_name': 'FileReadyToParse',
                 'filepath': path,
@@ -91,7 +101,7 @@ class YCM(object):
                 'column_num': ch + 1,
                 'file_data': {
                     path: {
-                        'contents': f.read(),
+                        'contents': contents,
                         'filetypes': ['c']
                     }
                 }
