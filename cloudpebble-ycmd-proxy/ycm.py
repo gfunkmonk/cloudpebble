@@ -22,10 +22,10 @@ __author__ = 'katharine'
 
 
 def _newlines_less_than(str, max_newlines):
-     for n, _ in enumerate(re.finditer('\n', str)):
-         if n == max_newlines:
-             return False
-     return True
+    for n, _ in enumerate(re.finditer('\n', str)):
+        if n == max_newlines:
+            return False
+    return True
 
 class YCM(object):
     def __init__(self, files, platform='aplite'):
