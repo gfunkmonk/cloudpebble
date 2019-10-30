@@ -83,8 +83,8 @@ services:
     ports:
       - 5432:5432
   s3:
-    #image: lphoward/fake-s3
-    build: fakes3/
+    image: lphoward/fake-s3
+    #build: fakes3/
     restart: unless-stopped
     volumes:
       - ./data/fakes3:/fakes3_root
