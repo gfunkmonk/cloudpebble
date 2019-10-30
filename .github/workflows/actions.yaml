@@ -1,3 +1,10 @@
+on: push
+name: My Workflow
+jobs:
+    my_job:
+      name: My Workflow Jobs
+      runs-on: ubuntu-latest
+steps:
 - name: ESLint checks
   uses: gimenete/eslint-action@1.0
 - name: Python Style Checker
