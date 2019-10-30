@@ -1,11 +1,7 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-<<<<<<< HEAD
 RUN apk update && apk add --no-cache libffi-dev ncurses-dev clang-dev && apk add --no-cache --virtual .build-deps llvm gcc g++ make automake git curl xz wget cmake python2-dev \ 
-=======
-RUN apk update && apk add --no-cache ncurses-dev && apk add --no-cache --virtual .build-deps gcc g++ make automake git curl xz wget cmake python2-dev \ 
->>>>>>> parent of 2969ac0... more shit to afix
   && rm -rf /var/cache/apk/* 
   #&& curl -L https://unpkg.com/@pnpm/self-installer | node
 
@@ -20,8 +16,8 @@ RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
   cp /tmp/CMakeLists.txt cpp/ycm/CMakeLists.txt && \
   #./build.sh --clang-completer
   #python build.py --clang-completer --system-libclang
-  #python build.py --clang-completer --system-libclang	
-  python build.py --clang-completer 
+  python build.py --clang-completer --system-libclang	
+  #python build.py --clang-completer 
 
 # Grab the toolchain
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
