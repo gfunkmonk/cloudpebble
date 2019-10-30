@@ -300,7 +300,7 @@ CloudPebble.Settings = (function() {
             var was_array_kind = app_uses_array_appkeys();
             if (to_array_kind == was_array_kind) return;
             appkey_table.mapValues(to_array_kind ? 1 : function(k, v, i) {
-                return k.trim() ? i : 0;
+                return !!k.trim() ? i : 0;
             });
         }
 
