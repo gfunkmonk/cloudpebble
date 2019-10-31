@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   web:
     build: cloudpebble/
@@ -65,18 +65,19 @@ services:
     ports:
       - 8002:80
   redis:
-    image: woahbase/alpine-redis:x86_64
+    #build: redis/
+    #image: woahbase/alpine-redis:x86_64
     #image: redis:alpine
-    #image: redis
+    image: redis
     restart: always
     volumes:
       - ./data/redis:/var/lib/redis
     ports:
       - 6379:6379
   postgres:
-    image: syaadachi/alpine-postgres:latest
+    #image: syaadachi/alpine-postgres:latest
     #image: postgres:11-alpine
-    #image: postgres
+    image: postgres
     restart: always
     volumes: 
       - ./data/postgres:/var/lib/postgresql/data

@@ -56,11 +56,33 @@ else:
         'default': dj_database_url.config()
 }
 
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+#        'LOCATION': '127.0.0.1:11211',
+#    }
+#}
+
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': [
+            'redis://127.0.0.1:6379/1',
+        ],
+        'OPTIONS': {
+            'DB': 1,
+            'PASSWORD': '',
+            'PARSER_CLASS': 'redis.connection.HiredisParser',
+            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
+            'CONNECTION_POOL_CLASS_KWARGS': {
+                'max_connections': 50,
+                'timeout': 30,
+            },
+            'MAX_CONNECTIONS': 1000,
+            'PICKLE_VERSION': -1,
+        },
+    },
 }
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__)) + '/../'
@@ -192,10 +214,10 @@ BOWER_INSTALLED_APPS = (
     'jshint/jshint',
     'html.sortable#~0.3.1',
     'gfunkmonk/jquery-textext',
+    'alexgorbatchev/jquery-textext',
     'CodeMirror#5.19.0',
-    'bluebird#~3.3.5',
-    'kanaka/noVNC#0.5.1',
-    'https://code.jquery.com/jquery-migrate-1.4.1.js',
+    'bluebird#~3.3.4',
+    'kanaka/noVNC#0.6.1',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -358,6 +380,7 @@ REDIS_URL = _environ.get('REDIS_URL', None) or _environ.get('REDISCLOUD_URL', 'r
 
 BROKER_URL = REDIS_URL + '/1'
 CELERY_RESULT_BACKEND = BROKER_URL
+CELERY_BROKER_TRANSPORT = 'redis'
 CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 CELERY_TASK_SERIALIZER = 'pickle'
 CELERY_RESULT_SERIALIZER = 'pickle'

@@ -1,14 +1,17 @@
-Flask==1.0.1
-Flask-Cors==3.0.1
-Jinja2==2.10.1
-MarkupSafe==0.23
-Werkzeug>=0.15
-backports.ssl-match-hostname==3.4.0.2
-gevent==1.1.1
-gevent-websocket==0.9.3
-greenlet>=0.4.14
+backports.ssl-match-hostname==3.7.0.1
+cffi==1.13.1; sys_platform == "win32" and platform_python_implementation == "CPython"
+click==7.0
+flask==0.12.4
+flask-cors==3.0.8
+gevent==1.4.0
+gevent-websocket==0.9.5
+greenlet==0.4.15
 itsdangerous==0.24
-redis==2.10.5
+jinja2==2.10.3
+markupsafe==0.23
+pycparser==2.19; sys_platform == "win32" and platform_python_implementation == "CPython"
+redis==2.10.3
 six==1.8.0
 websocket-client==0.23.0
+werkzeug==0.9.6
 wsgiref==0.1.2

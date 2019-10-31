@@ -3,7 +3,6 @@ SHELL ["/bin/bash", "-c"]
 
 RUN apk update && apk add --no-cache libffi-dev ncurses-dev clang-dev && apk add --no-cache --virtual .build-deps llvm gcc g++ make automake git curl xz wget cmake python2-dev \ 
   && rm -rf /var/cache/apk/* 
-  #&& curl -L https://unpkg.com/@pnpm/self-installer | node
 
 # ycmd
 ADD CMakeLists-v9.txt /tmp/CMakeLists.txt
@@ -18,6 +17,10 @@ RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
   #python build.py --clang-completer --system-libclang
   python build.py --clang-completer --system-libclang	
   #python build.py --clang-completer 
+
+# Install Poetry & ensure it is in $PATH
+RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
+ENV PATH "/root/.poetry/bin:/opt/venv/bin:${PATH}"
 
 # Grab the toolchain
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \

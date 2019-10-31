@@ -91,8 +91,8 @@ class YCM(object):
         path = self.files.abs_path(filepath)
         with open(path) as f:
             contents = f.read()
-             if _newlines_less_than(contents, 5):
-                 # YCMD complains if you try to parse a file with less than 5 lines.
+            if _newlines_less_than(contents, 5):
+            # YCMD complains if you try to parse a file with less than 5 lines.
                  return None
             request = {
                 'event_name': 'FileReadyToParse',
