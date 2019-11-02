@@ -6,11 +6,12 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext as _
 from github import UnknownObjectException
+from jsonview.views import JsonView
 import ide.git
 from ide.models.project import Project
 from ide.tasks.git import do_github_push, do_github_pull
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view, BadRequest
+from jsonview.decorators import json_view, BadRequest
 
 __author__ = 'katharine'
 

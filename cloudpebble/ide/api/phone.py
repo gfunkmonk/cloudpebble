@@ -5,10 +5,12 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_safe, require_POST
 from django.utils.translation import ugettext as _
+from jsonview.views import JsonView
 
 import requests
 from utils.redis_helper import redis_client
-from utils.jsonview import json_view, BadRequest
+#from utils.jsonview import json_view, BadRequest
+from jsonview.decorators import json_view, BadRequest
 
 
 @login_required

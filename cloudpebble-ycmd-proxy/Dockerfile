@@ -1,32 +1,32 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apk update && apk add --no-cache libffi-dev ncurses-dev clang-dev && apk add --no-cache --virtual .build-deps llvm gcc g++ make automake git curl xz wget cmake python2-dev \ 
-  && rm -rf /var/cache/apk/* 
+RUN apk update && apk add --no-cache ncurses-dev clang-dev && apk add --no-cache --virtual \
+  .build-deps llvm gcc g++ make automake git curl xz wget cmake python2-dev openssl-dev libffi-dev && \
+  wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+  wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
+  apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk && rm -rf /var/cache/apk/* 
 
 # ycmd
-ADD CMakeLists-v9.txt /tmp/CMakeLists.txt
+#ADD CMakeLists-v9.txt /tmp/CMakeLists.txt
 
 RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
 #RUN git clone https://github.com/gfunkmonk/ycmd.git -b cloudpebble /ycmd && cd /ycmd && \
   #git reset --hard c5ae6c2915e9fb9f7c18b5ec9bf8627d7d5456fd && \
   git reset --hard 10c456c6e32487c2b75b9ee754a1f6cc6bf38a4f && \
   git submodule update --init --recursive && \
-  cp /tmp/CMakeLists.txt cpp/ycm/CMakeLists.txt && \
+  #cp /tmp/CMakeLists.txt cpp/ycm/CMakeLists.txt && \
   #./build.sh --clang-completer
   #python build.py --clang-completer --system-libclang
   python build.py --clang-completer --system-libclang	
   #python build.py --clang-completer 
 
 # Install Poetry & ensure it is in $PATH
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
-ENV PATH "/root/.poetry/bin:/opt/venv/bin:${PATH}"
+#RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
+#ENV PATH "/root/.poetry/bin:/opt/venv/bin:${PATH}"
 
 # Grab the toolchain
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-  wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
-  apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk && \
-  curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/GNU/arm-cs-tools-stripped.tar.xz" | tar -xJ -C /
+RUN curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/GNU/arm-cs-tools-stripped.tar.xz" | tar -xJ -C /
 
 # Install SDK 2
 RUN mkdir /sdk2 && \
@@ -47,8 +47,8 @@ RUN cp /ycmd/libclang.so /ycmd/libclang.so.8 && \
   cp /usr/lib/libclang.so /ycmd/libclang.so.8
 
 COPY . /code
-FROM scratch
-COPY --from=squashme / /
+#FROM scratch
+#COPY --from=squashme / /
 WORKDIR /code
 
 ENV PATH="$PATH:/arm-cs-tools/bin" \
@@ -58,5 +58,4 @@ ENV PATH="$PATH:/arm-cs-tools/bin" \
   YCMD_DEFAULT_SETTINGS=/ycmd/ycmd/default_settings.json
 
 ENV PATH="$PATH:/ycmd"
-
 CMD ["python", "proxy.py"]

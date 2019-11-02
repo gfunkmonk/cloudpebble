@@ -12,9 +12,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext as _
+from jsonview.views import JsonView
 
 from utils.redis_helper import redis_client
-from utils.jsonview import json_view, InternalServerError
+from jsonview.decorators import json_view
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +42,7 @@ def launch_emulator(request):
     if qemu_instance is not None:
         qemu_instance = json.loads(qemu_instance)
         try:
-            response = requests.post(qemu_instance['ping_url'], timeout=2)
+            response = requests.post(qemu_instance['ping_url'], timeout=5)
             response.raise_for_status()
             response = response.json()
         except (requests.RequestException, ValueError) as e:

@@ -44,7 +44,7 @@ class Emulator(object):
         self._choose_ports()
         self._make_spi_image()
         self._spawn_qemu()
-        gevent.sleep(4)  # wait for the pebble to boot.
+        gevent.sleep(8)  # wait for the pebble to boot.
         self._spawn_pkjs()
 
     def kill(self):

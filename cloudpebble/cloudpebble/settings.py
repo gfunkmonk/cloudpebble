@@ -56,34 +56,34 @@ else:
         'default': dj_database_url.config()
 }
 
-#CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-#        'LOCATION': '127.0.0.1:11211',
-#    }
-#}
-
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.RedisCache',
-        'LOCATION': [
-            'redis://127.0.0.1:6379/1',
-        ],
-        'OPTIONS': {
-            'DB': 1,
-            'PASSWORD': '',
-            'PARSER_CLASS': 'redis.connection.HiredisParser',
-            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
-            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
-            'CONNECTION_POOL_CLASS_KWARGS': {
-                'max_connections': 50,
-                'timeout': 30,
-            },
-            'MAX_CONNECTIONS': 1000,
-            'PICKLE_VERSION': -1,
-        },
-    },
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
 }
+
+#CACHES = {
+#    'default': {
+#        'BACKEND': 'redis_cache.RedisCache',
+#        'LOCATION': [
+#            'redis://127.0.0.1:6379/1',
+#        ],
+#        'OPTIONS': {
+#            'DB': 1,
+#            'PASSWORD': '',
+#            'PARSER_CLASS': 'redis.connection.HiredisParser',
+#            'COMPRESSOR': 'django_redis.compressors.zlib.ZlibCompressor',
+#            'CONNECTION_POOL_CLASS': 'redis.BlockingConnectionPool',
+#            'CONNECTION_POOL_CLASS_KWARGS': {
+#                'max_connections': 50,
+#                'timeout': 30,
+#            },
+#            'MAX_CONNECTIONS': 1000,
+#            'PICKLE_VERSION': -1,
+#        },
+#    },
+#}
 
 PROJECT_PATH = os.path.dirname(os.path.abspath(__file__)) + '/../'
 
@@ -381,22 +381,25 @@ REDIS_URL = _environ.get('REDIS_URL', None) or _environ.get('REDISCLOUD_URL', 'r
 BROKER_URL = REDIS_URL + '/1'
 CELERY_RESULT_BACKEND = BROKER_URL
 CELERY_BROKER_TRANSPORT = 'redis'
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
-CELERY_TASK_SERIALIZER = 'pickle'
-CELERY_RESULT_SERIALIZER = 'pickle'
-##CELERY_ACCEPT_CONTENT = ['application/json']
-##CELERY_TASK_SERIALIZER = 'json'
-##CELERY_RESULT_SERIALIZER = 'json'
+CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERY_TIMEZONE = 'America/New_York'
 CELERY_ENABLE_UTC = False
 CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
 CELERYD_HIJACK_ROOT_LOGGER = False
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+##CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+##CELERY_TASK_SERIALIZER = 'pickle'
+##CELERY_RESULT_SERIALIZER = 'pickle'
 
-CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
-CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
+#CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
+#CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
+CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 900))
+CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 800))
 
-BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 10))
+#BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 10))
+BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 20))
 
 LOGIN_REDIRECT_URL = '/ide/'
 

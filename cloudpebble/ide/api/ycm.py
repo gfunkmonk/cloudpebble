@@ -8,9 +8,10 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from urlparse import urlparse
+from jsonview.views import JsonView
 
 from ide.models.project import Project
-from utils.jsonview import json_view
+from jsonview.decorators import json_view
 
 __author__ = 'katharine'
 

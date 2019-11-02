@@ -2,7 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from ide.tasks.archive import export_user_projects
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view
+from jsonview.views import JsonView
+from jsonview.decorators import json_view
 from ide.utils.whatsnew import get_new_things
 
 __author__ = 'katharine'

@@ -8,7 +8,8 @@ from django.views.decorators.http import require_POST, require_safe
 from ide.models.project import Project
 from ide.models.files import ResourceFile, ResourceIdentifier, ResourceVariant
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view, BadRequest
+from jsonview.views import JsonView
+from jsonview.decorators import json_view, BadRequest
 import utils.s3 as s3
 
 __author__ = 'katharine'

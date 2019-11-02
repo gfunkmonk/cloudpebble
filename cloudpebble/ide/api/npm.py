@@ -4,9 +4,10 @@ import requests
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_safe
 from django.http import Http404
+from jsonview.views import JsonView
 
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view
+from jsonview.decorators import json_view
 from utils.filter_dict import filter_dict
 
 __author__ = 'katharine'

@@ -11,7 +11,7 @@ if [ ! -z "$RUN_WEB" ]; then
 elif [ ! -z "$RUN_CELERY" ]; then
 	sleep 2
 	#C_FORCE_ROOT=true celery -A cloudpebble worker --loglevel=info
-	C_FORCE_ROOT=true python celery_start.py
+	C_FORCE_ROOT=true python tools/celery_start.py
         #C_FORCE_ROOT=true python manage.py celery worker --autoreload --loglevel=info
 else
 	echo "Doing nothing!"

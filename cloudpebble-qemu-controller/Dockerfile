@@ -1,8 +1,9 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apk update && apk add --no-cache pixman-dev glib-dev dtc-dev gnutls-dev boost-dev && apk add --no-cache --virtual .build-deps findutils make libtool \ 
- zlib-dev gcc g++ automake git curl make xz python2-dev perl && rm -rf /var/cache/apk/* 
+RUN apk update && apk add --no-cache pixman-dev glib-dev libffi-dev dtc-dev openssl-dev zlib-dev \ 
+  gnutls-dev boost && apk add --no-cache --virtual .build-deps libtool git curl make xz python2-dev \
+  perl-dev build-base && rm -rf /var/cache/apk/* 
 
 #RUN git clone https://github.com/gfunkmonk/qemu && cd /qemu && \
 RUN mkdir /qemu && cd /qemu && \
@@ -45,9 +46,8 @@ RUN mkdir /qemu-tintin-images && cd /qemu-tintin-images && \
 RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 COPY . /code
-
-FROM scratch
-COPY --from=squashme / /
+#FROM scratch
+#COPY --from=squashme / /
 WORKDIR /code
 
 ENV QEMU_DIR=/qemu QEMU_BIN=/qemu/arm-softmmu/qemu-system-arm \ 

@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction, IntegrityError
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_safe, require_POST
+from jsonview.views import JsonView
 
 from ide.models.build import BuildResult
 from ide.models.project import Project, TemplateProject
@@ -16,7 +17,7 @@ from ide.tasks.build import run_compile
 from ide.tasks.gist import import_gist
 from ide.tasks.git import do_import_github
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view, BadRequest
+from jsonview.decorators import json_view, BadRequest
 
 __author__ = 'katharine'
 

@@ -10,7 +10,8 @@ from django.utils.translation import ugettext as _
 from ide.models.project import Project
 from ide.models.files import SourceFile
 from utils.td_helper import send_td_event
-from utils.jsonview import json_view, BadRequest
+from jsonview.views import JsonView
+from jsonview.decorators import json_view, BadRequest
 
 __author__ = 'katharine'
 

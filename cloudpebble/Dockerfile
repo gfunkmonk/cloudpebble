@@ -2,9 +2,11 @@ FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 VOLUME ["/opt/node_modules"]
 
-RUN apk update && apk add --no-cache memcached postgresql-client postgresql-dev gettext git freetype \
- gcc g++ && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev linux-headers musl-dev python2-dev xz wget make curl && \
- rm -rf /var/cache/apk/* 
+RUN apk update && apk add --no-cache memcached postgresql-client postgresql-dev gettext git freetype wget \
+  gcc g++ && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev linux-headers musl-dev python2-dev xz libffi-dev make curl \
+  && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
+  && apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk && rm -rf /var/cache/apk/* 
 
 RUN npm install -g jshint bower && printf '{"allow_root": true}' > /root/.bowerrc 
 
@@ -12,17 +14,13 @@ RUN npm install -g jshint bower && printf '{"allow_root": true}' > /root/.bowerr
 #RUN cd /tmp && npm install && mkdir -p /opt/npm && cp -a \
 #  /tmp/node_modules /opt/npm/ && rm -fr /code/node_modules/
 #ENV NODE_MODULES_PATH /opt/npm/node_modules
-
 EXPOSE 8000
 
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Grab the toolchain
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-  wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
-  apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk && \
-  curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/GNU/arm-cs-tools-stripped.tar.xz" | tar -xJ -C /
+RUN curl -L "http://pebble.gfunkmonk.info/secret/arm-cs-tools/GNU/arm-cs-tools-stripped.tar.xz" | tar -xJ -C /
 
 # Install SDK 2
 RUN mkdir /sdk2 && \
