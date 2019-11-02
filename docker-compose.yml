@@ -33,7 +33,7 @@ services:
     restart: always
     volumes:
       - ./cloudpebble/:/code
-      - ./data/node:/opt/npm
+      - ./data/node:/opt/npm:z
     links:
       - redis
       - postgres
@@ -65,26 +65,32 @@ services:
     ports:
       - 8002:80
   redis:
-    image: woahbase/alpine-redis:x86_64
+    build: cloudpebble-misc/redis/
+    #image: woahbase/alpine-redis:x86_64
     #image: redis:alpine
     #image: redis
     restart: always
+    env_file:
+      - ./.env
     volumes:
-      - ./data/redis:/var/lib/redis
+      - ./data/redis:/var/lib/redis:z
     ports:
       - 6379:6379
   postgres:
-    image: syaadachi/alpine-postgres:latest
+    build: cloudpebble-misc/postgres/    
+    #image: syaadachi/alpine-postgres:latest
     #image: postgres:11-alpine
     #image: postgres
     restart: always
+    env_file:
+      - ./.env
     volumes: 
-      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql/data:z
     ports:
       - 5432:5432
   s3:
-    image: lphoward/fake-s3
-    #build: fakes3/
+    #image: lphoward/fake-s3
+    build: cloudpebble-misc/fakes3/
     restart: unless-stopped
     volumes:
       - ./data/fakes3:/fakes3_root
@@ -94,7 +100,7 @@ services:
       - 8003:4569
   memecached:
     #image: memcached:latest
-    build: ./memcached/
+    build:  cloudpebble-misc/memcached/
     restart: unless-stopped
     ports:
       - 11211:11211

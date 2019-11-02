@@ -12,6 +12,7 @@ import requests.exceptions
 import shutil
 import time
 import os
+import re
 
 from symbol_blacklist import is_valid_symbol
 import settings
@@ -20,6 +21,11 @@ from filesync import FileSync
 __author__ = 'katharine'
 
 
+def _newlines_less_than(str, max_newlines):
+    for n, _ in enumerate(re.finditer('\n', str)):
+        if n == max_newlines:
+            return False
+    return True
 class YCM(object):
     def __init__(self, files, platform='aplite'):
         assert isinstance(files, FileSync)
@@ -84,6 +90,10 @@ class YCM(object):
         self._update_ping()
         path = self.files.abs_path(filepath)
         with open(path) as f:
+            contents = f.read()
+            if _newlines_less_than(contents, 5):
+            # YCMD complains if you try to parse a file with less than 5 lines.
+                 return None
             request = {
                 'event_name': 'FileReadyToParse',
                 'filepath': path,
@@ -91,7 +101,7 @@ class YCM(object):
                 'column_num': ch + 1,
                 'file_data': {
                     path: {
-                        'contents': f.read(),
+                        'contents': contents,
                         'filetypes': ['c']
                     }
                 }

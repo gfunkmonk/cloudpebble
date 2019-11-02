@@ -1,12 +1,13 @@
 FROM gfunkmonk/alpine-python-node:3.10 AS squashme
 SHELL ["/bin/bash", "-c"]
 
-RUN apk update && apk add --no-cache pixman-dev glib-dev dtc-dev gnutls-dev boost && apk add --no-cache --virtual .build-deps findutils make libtool \ 
- zlib-dev gcc g++ automake git curl make xz python2-dev && rm -rf /var/cache/apk/* 
+RUN apk update && apk add --no-cache pixman-dev glib-dev libffi-dev dtc-dev openssl-dev zlib-dev \ 
+  gnutls-dev boost && apk add --no-cache --virtual .build-deps libtool git curl make xz python2-dev \
+  perl-dev build-base && rm -rf /var/cache/apk/* 
 
 #RUN git clone https://github.com/gfunkmonk/qemu && cd /qemu && \
 RUN mkdir /qemu && cd /qemu && \
-  curl -L https://github.com/gfunkmonk/qemu/archive/v2.5.0-pebble5b.tar.gz | tar xz --strip 1 && \
+  curl -L https://github.com/gfunkmonk/qemu/archive/v2.5.0-pebble6.tar.gz | tar xz --strip 1 && \
   ./configure \
      #--extra-ldflags=-g \
      --enable-debug --disable-werror --target-list="arm-softmmu" \
@@ -26,16 +27,14 @@ RUN mkdir /qemu && cd /qemu && \
   && make clean \
   && make -j4
 
-#RUN git clone https://github.com/gfunkmonk/pypkjs.git --depth 1 --branch master --recursive
-RUN git clone https://github.com/pebble/pypkjs.git --depth 1 --branch master --recursive
+RUN git clone https://github.com/gfunkmonk/pypkjs.git --depth 1 --branch alpine --recursive
+#RUN git clone https://github.com/pebble/pypkjs.git --depth 1 --branch master --recursive
 #RUN git clone https://github.com/pebble/pypkjs.git --depth 1 --branch v1.1.1 --recursive
 
 RUN pip install virtualenv && \
   virtualenv /pypkjs/.env && \
   . /pypkjs/.env/bin/activate \
-  && pip install -r /pypkjs/requirements.txt \
-  && curl -L http://pebble.gfunkmonk.info/secret/libboost.tar.xz | \
-  tar xJ -C /
+   && pip install -r /pypkjs/requirements.txt
 
 ADD requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
@@ -48,8 +47,8 @@ RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
 COPY . /code
 
-FROM scratch
-COPY --from=squashme / /
+#FROM scratch
+#COPY --from=squashme / /
 WORKDIR /code
 
 ENV QEMU_DIR=/qemu QEMU_BIN=/qemu/arm-softmmu/qemu-system-arm \ 
