@@ -10,10 +10,11 @@ RUN apk update && apk add --no-cache ncurses-dev clang-dev && apk add --no-cache
 # ycmd
 #COPY ./files/CMakeLists-v9.txt /tmp/CMakeLists.txt
 
-RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
+RUN git clone https://github.com/mjbrownie/ycmd.git /ycmd && cd /ycmd && \
+##RUN git clone https://github.com/Valloric/ycmd.git /ycmd && cd /ycmd && \
 #RUN git clone https://github.com/gfunkmonk/ycmd.git -b cloudpebble /ycmd && cd /ycmd && \
   #git reset --hard c5ae6c2915e9fb9f7c18b5ec9bf8627d7d5456fd && \
-  git reset --hard 10c456c6e32487c2b75b9ee754a1f6cc6bf38a4f && \
+  ##git reset --hard 10c456c6e32487c2b75b9ee754a1f6cc6bf38a4f && \
   git submodule update --init --recursive && \
   #cp /tmp/CMakeLists.txt cpp/ycm/CMakeLists.txt && \
   #./build.sh --clang-completer
@@ -39,8 +40,8 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 RUN apk del .build-deps && rm -rf /var/cache/apk/*
 
-RUN cp /ycmd/libclang.so /ycmd/libclang.so.8 && \
-  cp /usr/lib/libclang.so /ycmd/libclang.so.8
+#RUN cp /ycmd/libclang.so /ycmd/libclang.so.8 && \
+#  cp /usr/lib/libclang.so /ycmd/libclang.so.8
 
 COPY . /code
 #FROM scratch

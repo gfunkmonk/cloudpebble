@@ -1,6 +1,6 @@
 flask==0.12.4
 flask-cors==3.0.2
-gevent==1.5a2
+gevent==1.5a1
 gevent-websocket==0.9.3
 greenlet==0.4.15
 itsdangerous==0.24

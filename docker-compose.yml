@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3'
 services:
   web:
     build: cloudpebble/
@@ -33,7 +33,7 @@ services:
     restart: always
     volumes:
       - ./cloudpebble/:/code
-      - ./data/node:/opt/npm:z
+      - ./data/node:/opt/npm
     links:
       - redis
       - postgres
@@ -73,7 +73,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - ./data/redis:/var/lib/redis:z
+      - ./data/redis:/var/lib/redis
     ports:
       - 6379:6379
   postgres:
@@ -85,7 +85,7 @@ services:
     env_file:
       - ./.env
     volumes: 
-      - ./data/postgres:/var/lib/postgresql/data:z
+      - ./data/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
   s3:
@@ -93,7 +93,7 @@ services:
     build: cloudpebble-misc/fakes3/
     restart: unless-stopped
     volumes:
-      - ./data/fakes3:/fakes3_root
+      - ./data/fakes3_root:/fakes3_root
     env_file:
       - ./.env
     ports:

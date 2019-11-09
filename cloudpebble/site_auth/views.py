@@ -7,7 +7,6 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from ide.api import json_failure, json_response
 
-
 class IdeRegistrationView(RegistrationView):
     def get_success_url(self, *args, **kwargs):
         return "/ide/"

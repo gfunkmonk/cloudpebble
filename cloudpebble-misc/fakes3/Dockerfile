@@ -10,13 +10,12 @@ ENV FAKES3_VERSION 2.0.0
 #ENV FAKES3_VERSION 1.2.0
 #ENV FAKES3_VERSION 0.2.4
 
-RUN mkdir -p /fakes3_root && chown nobody:nobody /fakes3_root && \
+RUN mkdir -p /fakes3_root && chown -R nobody:nobody /fakes3_root && \
   chmod 0750 /fakes3_root
 
-VOLUME ["/fakes3_root"]
-RUN chown nobody:nobody /fakes3_root && chmod 0750 /fakes3_root
-
 WORKDIR /fakes3_root
+VOLUME ["/fakes3_root"]
+
 EXPOSE 4569
 
 RUN apk --no-cache add ruby ruby-io-console ruby-etc && \

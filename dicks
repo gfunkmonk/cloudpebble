@@ -1,4 +1,4 @@
 #!/bin/bash
 docker-clean && uber-clean && \
- docker-compose build --squash --compress --force-rm --pull \
+ docker-compose build --squash --compress --force-rm --pull --parallel \
  && docker-compose up

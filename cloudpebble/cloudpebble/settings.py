@@ -205,18 +205,17 @@ STATICFILES_FINDERS = (
 )
 
 BOWER_INSTALLED_APPS = (
-    'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
-    'jquery#~2.1.3',
+    'https://github.com/krisk/Fuse.git#2ec2f2c40059e135cabf2b01c8c3f96f808b8809',
+    'jquery#~2.1.4',
     'underscore',
     'backbone',
     'text-encoding',
     'jshint/jshint',
     'html.sortable#~0.3.1',
-    #'gfunkmonk/jquery-textext',
     'alexgorbatchev/jquery-textext',
     'CodeMirror#5.19.0',
-    'bluebird#~3.3.4',
-    'kanaka/noVNC#0.6.1',
+    'bluebird#~3.3.5',
+    'kanaka/noVNC#0.5',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -240,6 +239,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'site_auth.pebble.DisableCSRF',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -461,6 +461,10 @@ ROBOTS_USE_SCHEME_IN_HOST = True
 ROBOTS_CACHE_TIMEOUT = 60*60*24
 
 USE_THOUSAND_SEPARATOR = True
+AWS_S3_HOST="s3-us-east-1.amazonaws.com"
+EMAIL_HOST="mail.cloudpebble.tk"
+NUMBER_GROUPING="3"
+SERVER_EMAIL="admin@cloudpebble.tk"
 
 #import djcelery
 #djcelery.setup_loader()
