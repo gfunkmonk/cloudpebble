@@ -1,4 +1,5 @@
-FROM gfunkmonk/alpine-python-node:3.10 AS squashme
+#FROM gfunkmonk/alpine-python-node:3.10 AS squashme
+FROM gfunkmonk/alpine-python-node:test2 AS squashme
 SHELL ["/bin/bash", "-c"]
 
 RUN apk update && apk add --no-cache pixman-dev glib-dev libffi-dev dtc-dev openssl-dev zlib-dev \ 

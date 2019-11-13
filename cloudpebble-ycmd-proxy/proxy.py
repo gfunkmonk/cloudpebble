@@ -150,13 +150,14 @@ def run_server():
             'keyfile': os.path.join(settings.SSL_ROOT, 'server-key.pem'),
             'certfile': os.path.join(settings.SSL_ROOT, 'server-cert.pem'),
             'ca_certs': os.path.join(settings.SSL_ROOT, 'ca-cert.pem'),
-            'ssl_version': ssl.PROTOCOL_TLSv1,
+            #'ssl_version': ssl.PROTOCOL_TLSv1,
+            'ssl_version': ssl.PROTOCOL_SSLv23,
         }
     server = pywsgi.WSGIServer(('', settings.PORT), app, handler_class=WebSocketHandler, **ssl_args)
 
     # Ensure that the program actually quits when we ask it to
     def sigterm_handler(_signo, _stack_frame):
-        server.stop(timeout=1)
+        server.stop(timeout=2)
     signal.signal(signal.SIGTERM, sigterm_handler)
 
     server.start()

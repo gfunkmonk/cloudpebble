@@ -4,7 +4,8 @@ FROM alpine:3.10
 
 RUN umask 0000
 
-ARG HOST_NAME=s3.amazonaws.com
+##ARG HOST_NAME=s3.amazonaws.com
+ARG HOST_NAME=s3-us-east-2.amazonaws.com
 ENV FAKES3_VERSION 2.0.0
 #ENV FAKES3_VERSION 1.2.1
 #ENV FAKES3_VERSION 1.2.0

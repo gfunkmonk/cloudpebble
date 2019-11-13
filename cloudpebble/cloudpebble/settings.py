@@ -215,7 +215,7 @@ BOWER_INSTALLED_APPS = (
     'alexgorbatchev/jquery-textext',
     'CodeMirror#5.19.0',
     'bluebird#~3.3.5',
-    'kanaka/noVNC#0.5',
+    'kanaka/noVNC#0.6.1',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -380,18 +380,18 @@ REDIS_URL = _environ.get('REDIS_URL', None) or _environ.get('REDISCLOUD_URL', 'r
 BROKER_URL = REDIS_URL + '/1'
 CELERY_RESULT_BACKEND = BROKER_URL
 CELERY_BROKER_TRANSPORT = 'redis'
-CELERYD_TASK_SOFT_TIME_LIMIT = 60
+#CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERY_TIMEZONE = 'America/New_York'
 CELERY_ENABLE_UTC = False
 CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERYD_HIJACK_ROOT_LOGGER = False
-##CELERY_ACCEPT_CONTENT = ['application/json']
-##CELERY_TASK_SERIALIZER = 'json'
-##CELERY_RESULT_SERIALIZER = 'json'
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
-CELERY_TASK_SERIALIZER = 'pickle'
-CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+#CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+#CELERY_TASK_SERIALIZER = 'pickle'
+#CELERY_RESULT_SERIALIZER = 'pickle'
 
 CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
 CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
@@ -401,7 +401,6 @@ BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 10))
 LOGIN_REDIRECT_URL = '/ide/'
 
 LOGIN_URL = '/#login'
-
 
 FILE_STORAGE = os.getcwd() + '/user_data/'
 
@@ -461,7 +460,7 @@ ROBOTS_USE_SCHEME_IN_HOST = True
 ROBOTS_CACHE_TIMEOUT = 60*60*24
 
 USE_THOUSAND_SEPARATOR = True
-AWS_S3_HOST="s3-us-east-1.amazonaws.com"
+AWS_S3_HOST="s3-us-east-2.amazonaws.com"
 EMAIL_HOST="mail.cloudpebble.tk"
 NUMBER_GROUPING="3"
 SERVER_EMAIL="admin@cloudpebble.tk"

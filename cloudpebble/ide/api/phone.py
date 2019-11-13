@@ -10,7 +10,6 @@ import requests
 from utils.redis_helper import redis_client
 from utils.jsonview import json_view, BadRequest
 
-
 @login_required
 @require_safe
 @json_view

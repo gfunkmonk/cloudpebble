@@ -1,12 +1,14 @@
-FROM gfunkmonk/alpine-python-node:3.10 AS squashme
+#FROM gfunkmonk/alpine-python-node:3.10 AS squashme
+FROM gfunkmonk/alpine-python-node:test2 AS squashme
 SHELL ["/bin/bash", "-c"]
 VOLUME ["/opt/node_modules"]
 
 RUN apk update && apk add --no-cache memcached postgresql-client postgresql-dev gettext git freetype wget \
   gcc g++ && apk add --no-cache --virtual .build-deps zlib-dev jpeg-dev linux-headers musl-dev python2-dev xz libffi-dev make curl \
-  && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
-  && apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk && rm -rf /var/cache/apk/* 
+  #&& wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+  #&& wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk \
+  #&& apk add glibc-2.29-r0.apk && rm glibc-2.29-r0.apk 
+  && rm -rf /var/cache/apk/* 
 
 RUN npm install -g jshint bower && printf '{"allow_root": true}' > /root/.bowerrc 
 

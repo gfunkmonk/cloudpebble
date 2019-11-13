@@ -6,8 +6,8 @@ gevent.monkey.patch_all(subprocess=True)
 import gevent
 import gevent.pool
 from flask import Flask, request, abort, jsonify
-from flask.ext.cors import CORS
-#from flask_cors import CORS
+#from flask.ext.cors import CORS
+from flask_cors import CORS
 from time import time as now
 import ssl
 import os
@@ -187,7 +187,7 @@ def drop_privileges(uid_name='nobody', gid_name='nogroup'):
     os.setuid(running_uid)
 
     # Ensure a very conservative umask
-    os.umask(077)
+    os.umask(0o77)
 
 logging.info("Emulator limit: %d", settings.EMULATOR_LIMIT)
 
