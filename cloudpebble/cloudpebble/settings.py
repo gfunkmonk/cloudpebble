@@ -205,17 +205,16 @@ STATICFILES_FINDERS = (
 )
 
 BOWER_INSTALLED_APPS = (
-    'https://github.com/krisk/Fuse.git#a546cb3aa2a845e4f4cb2460ad94e0b92ccbe407',
-    'jquery#~2.1.3',
+    'https://github.com/krisk/Fuse.git#2ec2f2c40059e135cabf2b01c8c3f96f808b8809',
+    'jquery#~2.1.4',
     'underscore',
     'backbone',
     'text-encoding',
     'jshint/jshint',
     'html.sortable#~0.3.1',
-    #'gfunkmonk/jquery-textext',
     'alexgorbatchev/jquery-textext',
     'CodeMirror#5.19.0',
-    'bluebird#~3.3.4',
+    'bluebird#~3.3.5',
     'kanaka/noVNC#0.6.1',
 )
 
@@ -240,6 +239,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    'site_auth.pebble.DisableCSRF',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -380,18 +380,18 @@ REDIS_URL = _environ.get('REDIS_URL', None) or _environ.get('REDISCLOUD_URL', 'r
 BROKER_URL = REDIS_URL + '/1'
 CELERY_RESULT_BACKEND = BROKER_URL
 CELERY_BROKER_TRANSPORT = 'redis'
-CELERYD_TASK_SOFT_TIME_LIMIT = 60
+#CELERYD_TASK_SOFT_TIME_LIMIT = 60
 CELERY_TIMEZONE = 'America/New_York'
 CELERY_ENABLE_UTC = False
 CELERYBEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 CELERYD_HIJACK_ROOT_LOGGER = False
-##CELERY_ACCEPT_CONTENT = ['application/json']
-##CELERY_TASK_SERIALIZER = 'json'
-##CELERY_RESULT_SERIALIZER = 'json'
-CELERY_ACCEPT_CONTENT = ['json', 'pickle']
-CELERY_TASK_SERIALIZER = 'pickle'
-CELERY_RESULT_SERIALIZER = 'pickle'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+#CELERY_ACCEPT_CONTENT = ['json', 'pickle']
+#CELERY_TASK_SERIALIZER = 'pickle'
+#CELERY_RESULT_SERIALIZER = 'pickle'
 
 CELERYD_TASK_TIME_LIMIT = int(_environ.get('CELERYD_TASK_TIME_LIMIT', 620))
 CELERYD_TASK_SOFT_TIME_LIMIT = int(_environ.get('CELERYD_TASK_SOFT_TIME_LIMIT', 600))
@@ -401,7 +401,6 @@ BROKER_POOL_LIMIT = int(_environ.get('BROKER_POOL_LIMIT', 10))
 LOGIN_REDIRECT_URL = '/ide/'
 
 LOGIN_URL = '/#login'
-
 
 FILE_STORAGE = os.getcwd() + '/user_data/'
 
@@ -461,6 +460,10 @@ ROBOTS_USE_SCHEME_IN_HOST = True
 ROBOTS_CACHE_TIMEOUT = 60*60*24
 
 USE_THOUSAND_SEPARATOR = True
+AWS_S3_HOST="s3-us-east-2.amazonaws.com"
+EMAIL_HOST="mail.cloudpebble.tk"
+NUMBER_GROUPING="3"
+SERVER_EMAIL="admin@cloudpebble.tk"
 
 #import djcelery
 #djcelery.setup_loader()

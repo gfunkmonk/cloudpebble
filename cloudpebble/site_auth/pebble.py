@@ -14,6 +14,7 @@ class PebbleOAuth2(BaseOAuth2):
     REDIRECT_STATE = False
     SESSION_COOKIE_SECURE = False
     SESSION_COOKIE_SAMESITE = None
+    CSRF_COOKIE_SECURE = False
     ID_KEY = 'uid'
     #SOCIAL_AUTH_LOGIN_REDIRECT_URL 'http://cloudpebble.tk/complete/pebble/'
     SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
@@ -29,7 +30,7 @@ class PebbleOAuth2(BaseOAuth2):
         return {
             'email': response.get('email'),
             'fullname': response.get('name'),
-            'username': response.get('user.id'),
+            'username': response.get('user'),
             'uid': response.get('uid')
         }
 
@@ -76,3 +77,7 @@ def clear_old_login(backend, uid, user=None, *args, **kwargs):
     if user and social and user == social.user:
         if user.has_usable_password():
             user.set_unusable_password()
+
+class DisableCSRF(object):
+    def process_request(self, request):
+        setattr(request, '_dont_enforce_csrf_checks', True)

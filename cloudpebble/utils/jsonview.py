@@ -2,7 +2,8 @@
 Based on https://github.com/jsocol/django-jsonview
 """
 
-import json
+#import json
+import simplejson as json
 import logging
 import traceback
 from functools import wraps

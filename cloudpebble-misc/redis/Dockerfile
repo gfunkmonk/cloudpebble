@@ -68,9 +68,9 @@ RUN set -eux; \
 	redis-cli --version; \
 	redis-server --version
 
-RUN mkdir /data && chown redis:redis /data
-VOLUME /data
+RUN mkdir /data && chown 1000:999 /data
 WORKDIR /data
+VOLUME /data
 
 COPY docker-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["docker-entrypoint.sh"]
