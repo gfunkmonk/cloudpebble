@@ -1,15 +1,21 @@
 {
-	"name": "cloudpebble",
-	"version": "0.2.2",
-	"description": "It clouds pebbles, yo",
-	"license": "MIT",
-	"dependencies": {
-		"rocky-lint": "^2.0.1",
-		"updatejs": "^0.4.2",
-		"utf8": "^2.1.1"
-	},
-	"engines": {
-		"node": "v12.13.0",
-		"yarn": "1.19.1"
-	}
+  "name": "cloudpebble",
+  "version": "0.2.2",
+  "description": "It clouds pebbles, yo",
+  "license": "MIT",
+  "dependencies": {
+    "rocky-lint": "^2.0.1",
+    "updatejs": "^0.4.2",
+    "utf8": "^2.1.1",
+    "snyk": "^1.316.1"
+  },
+  "engines": {
+    "node": "v12.13.0",
+    "yarn": "1.19.1"
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
