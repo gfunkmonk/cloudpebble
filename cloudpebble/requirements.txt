@@ -26,7 +26,7 @@ freetype-py==1.0
 gevent==1.1.1
 greenlet>=0.4.9
 gunicorn==19.9.0
-httplib2==0.12.3
+httplib2==0.18.0
 kombu==4.1.0
 mock==3.0.0
 newrelic==2.50.0.39
