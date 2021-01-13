@@ -32,7 +32,7 @@ mock==3.0.0
 newrelic==2.50.0.39
 oauth2client==1.5.1
 oauthlib==3.0.2
-pillow==6.1.0
+pillow==8.0.1
 psycogreen==1.0.1
 pyasn1==0.4.7
 pyasn1-modules==0.2.7
