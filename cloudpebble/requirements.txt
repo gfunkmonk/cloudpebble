@@ -43,7 +43,7 @@ python-dateutil==2.8.0
 python-memcached==1.59
 python-openid==2.2.5
 pytz==2019.3
-pyyaml==5.1.2
+pyyaml==5.4
 qrcode==4.0.4
 redis==2.10.5
 #redis==3.3.11
